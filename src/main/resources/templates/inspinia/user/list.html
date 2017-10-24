@@ -1,0 +1,81 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-9 input-group">
+        <h3>用户管理中心</h3>
+        <!--<ol class="breadcrumb">-->
+        <!--<li>-->
+        <!--<a href="index.html">主页</a>-->
+        <!--</li>-->
+        <!--<li>-->
+        <!--系统管理-->
+        <!--</li>-->
+        <!--<li class="active">-->
+        <!--<strong>用户中心</strong>-->
+        <!--</li>-->
+        <!--</ol>-->
+    </div>
+    <!-- TODO 查找用户-->
+    <!--<form role="search" class="navbar-form-custom pull-right" action="javascript:search_user(this);">-->
+    <!--<div class="form-control form-group">-->
+    <!--<input type="text" placeholder="查找用户..." class="form-control" name="top-search" id="top-search">-->
+    <!--</div>-->
+    <!--</form>-->
+    <form method="get" action="index.html" class="mail-search" action="javascript:search_user(this);">
+        <div class="input-group">
+            <input type="text" class="form-control input-sm" name="search" placeholder="查找用户...">
+            <div class="input-group-btn">
+                <button type="submit" class="btn btn-sm btn-info">
+                    <i class="fa fa-search"></i> 查找
+                </button>
+                <!--data-target="#modal-form-user-add"-->
+                <!--data-toggle="modal"-->
+                <!--href="#modal-form-user-add"-->
+                <a data-toggle="modal"
+                   class="btn btn-sm btn-primary"
+                   onclick="modalShow('#modal-form-user-add', '', 'user/edit/NULL');"
+                   >
+                    <i class="fa fa-user-plus"></i> 新增
+                </a>
+            </div>
+        </div>
+    </form>
+</div>
+<div class="wrapper wrapper-content animated fadeInRight">
+    <div class="row">
+        <!-- TODO 用户显示-->
+        <div class="col-lg-3">
+            <!-- bg-white,bg-warning,bg-danger -->
+            <div class=" contact-box center-version text-uppercase bg-white">
+                <a href="profile.html">
+                    <!-- circle-border m-b-md -->
+                    <img alt="image" class="img-circle " src="inspinia/img/marc.jpg"/>
+                    <h3 class="m-b-xs"><strong>cfq 管理员</strong></h3>
+                    <div class="font-bold">
+                        <small>高级开发工程师</small>
+                    </div>
+                    <!--<address class="m-t-md">-->
+                    <!--just do it!-->
+                    <!--</address>-->
+                </a>
+                <div class="contact-box-footer">
+                    <a class="btn btn-xs btn-info"><i class="fa fa-edit"></i> 修改 </a>
+                    <a class="btn btn-xs btn-warning"><i class="fa fa-lock"></i> 锁定</a>
+                    <a class="btn btn-xs btn-danger"><i class="fa fa-exclamation-circle"></i> 删除</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- TODO 新增用户界面 -->
+<div id="modal-form-user-add" class="modal" style="height: 550px">
+    <div class="modal-dialog ">
+        <div class="modal-content">
+        </div>
+    </div>
+</div>
+<!-- iCheck -->
+<script src="inspinia/js/plugins/iCheck/icheck.min.js"></script>
+<script type="application/javascript">
+    function search_user(form) {
+        alert(form);
+    }
+</script>

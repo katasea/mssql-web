@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th=http://www.thymeleaf.org>
+
+<head>
+
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>SCC | 登录</title>
+
+    <link href="inspinia/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{inspinia/font-awesome-4.7.0/css/font-awesome.min.css}"/>
+    <!-- Toastr style -->
+    <link href="inspinia/css/plugins/toastr/toastr.min.css" rel="stylesheet">
+
+    <!-- Gritter -->
+    <link href="inspinia/js/plugins/gritter/jquery.gritter.css" rel="stylesheet">
+
+    <link href="inspinia/css/animate.css" rel="stylesheet">
+    <link href="inspinia/css/style.css" rel="stylesheet">
+</head>
+
+<body class="bgImg gray-bg ">
+
+<div class="middle-box text-center loginscreen animated fadeInDown">
+    <div>
+        <div>
+            <h1 class="logo-name">SCC</h1>
+        </div>
+        <!--<h3>SCC | 登录</h3>-->
+        <form id="form_scc_login"  class="m-t" role="form" action="javascript: submitForm();">
+            <div class="form-group op">
+                <div class="input-group m-b">
+                    <span class="input-group-addon"><i class="fa fa-user-o" aria-hidden="true"></i></span>
+                    <input id="userid" type="text" placeholder="用户名" class="form-control" required="">
+                </div>
+                <div class="input-group m-b">
+                    <span class="input-group-addon"><i class="fa fa-exclamation-circle" aria-hidden="true"></i></span>
+                    <input id="password" type="password" class="form-control" placeholder="密码" required="">
+                </div>
+            </div>
+            <button id='btn_login' type="submit" class="btn btn-primary block full-width m-b">
+                <i class="fa fa-desktop" aria-hidden="true"></i> 登录
+            </button>
+
+            <a href="#"><small>忘记密码？</small></a>
+            <p class="text-muted text-center"><small>还没有账号吗？</small></p>
+            <a class="btn btn-sm btn-info btn-block" href="register.html">
+                <i class="fa fa-heart" aria-hidden="true"></i> 注册用户
+            </a>
+        </form>
+        <p class="m-t">
+            <small>
+                版权所有&copy;2017-10
+                <a href="https://github.com/kkillala/scc">kkillala
+                <i class="fa fa-github" aria-hidden="true"></i>
+                </a>
+            </small>
+        </p>
+    </div>
+</div>
+<!-- Mainly scripts -->
+<script src="inspinia/js/jquery-3.1.1.min.js"></script>
+<script src="inspinia/js/bootstrap.min.js"></script>
+<script src="inspinia/js/plugins/pace/pace.min.js"></script>
+<!-- Toastr -->
+<script src="inspinia/js/plugins/toastr/toastr.min.js"></script>
+<script>//<![CDATA[
+var validator = false;
+$().ready(function () {
+    jQuery("#userid").focus();
+    /**
+     * 回车事件的处理
+     */
+    jQuery("#userid").keyup(function (e) {
+        var keyCode = (e.keyCode) || (e.which) || (e.charCode);
+        if (keyCode == 13) {
+            var user_value = jQuery("#userid").val();
+            if (user_value != "") {
+                var password = jQuery("#password").val();
+                if (password != "") {
+                    jQuery("#btn_login").focus();
+                } else {
+                    jQuery("#password").focus();
+                }
+                jQuery("#password").focus();
+            } else {
+                jQuery("#userid").focus();
+            }
+        }
+    });
+    //不能捕获document的keyup事件。因为错误消息弹出后，用回车之后又触发回车事件。
+    jQuery("#form_scc_login").keypress(function (e) {
+        var keyCode = (e.keyCode) || (e.which) || (e.charCode);
+        if (keyCode == 13) {
+            var password = jQuery("#password").val();
+            var user_value = jQuery("#userid").val();
+            if (password != '' && user_value != '') {
+                jQuery("#btn_login").focus();
+                jQuery("#btn_login").blur();
+                submitForm();
+            }
+        }
+    });
+});
+
+function submitForm() {
+    //var flag = validator.form();
+//    if (flag == true) {
+    jQuery("#btn_login").attr("disabled", true);
+//    var formData = $("#form_scc_login").serializeArray();
+    var user_value = jQuery("#userid").val();
+    var password = jQuery("#password").val();
+    var formData = {userid:user_value,password:password};
+    var url = "valiad";
+//    }
+    jQuery.post(url, formData, function (jsonData) {
+        jQuery("#btn_login").attr("disabled", false);
+        if (jsonData != null) {
+            var flag = jsonData.flag;
+            var message = jsonData.msg;
+            if (flag == true) {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+//                    positionClass: "toast-bottom-right",
+//                    positionClass: "toast-top-full-width",
+                    positionClass: "toast-top-right",
+                    showMethod: 'slideDown',
+//                    hideMethod: "slideUp",
+                    timeOut: 4000
+                };
+                toastr.success('成功提示', "登录成功！系统正在跳转...");
+                var url = "main";
+                window.top.location.href = url;
+            } else {
+                toastr.options = {
+                    closeButton: true,
+                    progressBar: true,
+//                    positionClass: "toast-bottom-right",
+//                    positionClass: "toast-top-full-width",
+                    positionClass: "toast-top-right",
+                    showMethod: 'slideDown',
+//                    hideMethod: "slideUp",
+                    timeOut: 4000
+                };
+                toastr.error('错误提示', message);
+                jQuery("#userid").focus();
+            }
+        }
+    }, "json");
+}
+
+//]]>
+</script>
+</body>
+
+</html>
