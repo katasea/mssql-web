@@ -1,75 +1,77 @@
 package com.common;
 
+
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-
-import com.main.pojo.LoginInfo;
-
 /**
  * 工具类，存放大部分通用方法
+ *
  * @author chenfuqiang
  */
 public class CommonUtil {
-	/**
-	 * 获取自己系统的业务信息
-	 * @param request
-	 * @return
-	 */
-	public static LoginInfo getYeWu(HttpServletRequest request) {
-		return new LoginInfo(request);
-	}
-	
+
 	/**
 	 * 判断是否为空字符串
+	 *
 	 * @param str
 	 * @return boolean
 	 */
-	public static boolean isNullStr(String str) {
-		if(str == null || "".equals(str) || "null".equals(str) || "NaN".equals(str)) {
+	public static boolean isEmpty(String str) {
+		if (str == null || "".equals(str) || "null".equals(str.toLowerCase()) || "NaN".equals(str)) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
 	}
-	
+
+	public static boolean isNotEmpty(String str) {
+		return !CommonUtil.isEmpty(str);
+	}
+
 	/**
 	 * 空字符串转为0
+	 *
 	 * @param str
 	 * @return String
 	 */
 	public static String nullToZero(String str) {
-		if(CommonUtil.isNullStr(str)) {
+		if (CommonUtil.isEmpty(str)) {
 			return "0";
-		}else {
+		} else {
 			return str;
 		}
 	}
-	
+
 	/**
 	 * 空字符串转换为""
+	 *
 	 * @param str
 	 * @return String
 	 */
 	public static String nullToStr(String str) {
-		if(CommonUtil.isNullStr(str)) {
+		if (CommonUtil.isEmpty(str)) {
 			return "";
-		}else {
+		} else {
 			return str;
 		}
 	}
+
 	/**
 	 * 判断list 是否是空的
+	 *
 	 * @param list
 	 * @return
 	 */
-	public static boolean isNullList(List<?> list) {
-		if(list == null || list.size() == 0) {
+	public static boolean isEmptyList(List<?> list) {
+		if (list == null || list.size() == 0) {
 			return true;
-		}else {
+		} else {
 			return false;
 		}
+	}
+	public static boolean isNotEmptyList(List<?> list) {
+		return !CommonUtil.isEmptyList(list);
 	}
 
 	public static String vo(Object object) {
@@ -77,15 +79,15 @@ public class CommonUtil {
 	}
 
 	public static <T> T getMV(Map<String, T> map, String key) {
-		if(map == null || map.size() == 0) {
+		if (map == null || map.size() == 0) {
 			return null;
-		}else {
+		} else {
 			return map.get(key);
 		}
 	}
-	
+
 	public static String createPageSQLForMs(String sql, String primaryID,
-			int firstRow, int maxRow) {
+											int firstRow, int maxRow) {
 		// 1：正序、0：反序。默认正序
 		int OrderByType = 1;
 

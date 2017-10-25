@@ -18,7 +18,7 @@ public class LoginInfo {
 
 	public LoginInfo(HttpServletRequest request) {
 		String theyear = request.getParameter("theyear");
-		if(!CommonUtil.isNullStr(theyear)) {
+		if(!CommonUtil.isEmpty(theyear)) {
 			this.setTheyear(theyear);
 		}
 	}

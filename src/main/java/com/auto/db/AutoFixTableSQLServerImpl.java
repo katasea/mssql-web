@@ -84,14 +84,14 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 				continue;
 			}
 			String tablename = table.name();
-			if(CommonUtil.isNullStr(tablename)) {
+			if(CommonUtil.isEmpty(tablename)) {
 				tablename = clas.getSimpleName();
 			}
 			tablename = tablename.toUpperCase().replace("@YEAR", year); 
 			//==================================================================================//
 			//去掉索引，然后再修改列
 			String indexName = table_indexName.get(tablename.toUpperCase());
-			if(!CommonUtil.isNullStr(indexName)){
+			if(!CommonUtil.isEmpty(indexName)){
 				pkBuf.append("ALTER TABLE "+tablename+" drop CONSTRAINT "+indexName+" \r\n");
 				sqlPK.add(pkBuf.toString());
 			}
@@ -109,17 +109,17 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 			for (Field field : fields){
 				Column column = field.getAnnotation(Column.class);
 				if(column == null) {continue;}
-				String columnname = CommonUtil.isNullStr(column.name())?field.getName():column.name();
+				String columnname = CommonUtil.isEmpty(column.name())?field.getName():column.name();
 				String flag = column.flag();
 				String dv = column.defaultValue();
 				String oth = column.oth();//identity(1,1)
-				if(!CommonUtil.isNullStr(dv)&&li!=null) {
+				if(!CommonUtil.isEmpty(dv)&&li!=null) {
 					dv = dv.toUpperCase().replace("@YEAR", year);
 				}
 				String type = column.type();
 				
 				addBuf.append("[").append(columnname).append("] ").append(type).append(" ");
-				if(!CommonUtil.isNullStr(oth)) {
+				if(!CommonUtil.isEmpty(oth)) {
 					addBuf.append(" "+oth+" ");
 				}
 				if("PRIMARY".equals(CommonUtil.nullToStr(flag).toUpperCase())) {
@@ -128,7 +128,7 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 					
 					addBuf.append(" NOT NULL ");
 				}
-				if(!CommonUtil.isNullStr(dv)&&li!=null) {
+				if(!CommonUtil.isEmpty(dv)&&li!=null) {
 					addBuf.append(" DEFAULT (").append(dv).append(") ");
 					dvBuf.append("Update ").append(tablename).append(" Set ").append(columnname).append("=").append(dv).append(" ");
 					dvBuf.append("Where ").append(columnname).append(" is null").append(" \r\n");
@@ -141,7 +141,7 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 				if("PRIMARY".equals(CommonUtil.nullToStr(flag).toUpperCase())) {
 					editBuf.append(" NOT NULL ");
 				}else {
-					if(!CommonUtil.isNullStr(oth)) {
+					if(!CommonUtil.isEmpty(oth)) {
 						editBuf.append(" NOT NULL ");
 					}
 				}
@@ -153,7 +153,7 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 				if("PRIMARY".equals(CommonUtil.nullToStr(flag).toUpperCase())) {
 					editBuf.append(" NOT NULL ");
 				}else {
-					if(!CommonUtil.isNullStr(oth)) {
+					if(!CommonUtil.isEmpty(oth)) {
 						editBuf.append(" NOT NULL ");
 					}
 				}
