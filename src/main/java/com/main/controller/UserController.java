@@ -3,6 +3,9 @@ package com.main.controller;
 import com.main.pojo.StateInfo;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UnknownAccountException;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,12 +29,6 @@ public class UserController {
      */
     @Value("${server.port}")
     private String port;
-
-    @Value("${spring.datasource.username}")
-    private String username;
-
-    @Value("${spring.datasource.password}")
-    private String password;
 
     /**
      * 登录页面
@@ -75,11 +72,17 @@ public class UserController {
          * 状态信息
          */
         StateInfo stateInfo = new StateInfo();
-        if(username.equals(request.getParameter("userid")) && password.equals(request.getParameter("password"))) {
-            stateInfo.setFlag(true);
-        }else {
+        // 登录后存放进shiro token
+        UsernamePasswordToken token = new UsernamePasswordToken(request.getParameter("userid"), request.getParameter("password"));
+        Subject subject = SecurityUtils.getSubject();
+        try{
+            subject.login(token);
+        }catch (UnknownAccountException e) {
             stateInfo.setFlag(false);
-            stateInfo.setMsg("请确认用户名密码是否正确！");
+            stateInfo.setMsg("未识别的用户名!");
+        }catch (Exception e ){
+            stateInfo.setFlag(false);
+            stateInfo.setMsg(e.getMessage());
         }
         return stateInfo;
     }
