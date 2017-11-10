@@ -1,6 +1,7 @@
 package com.main.controller;
 
 import com.main.pojo.StateInfo;
+import com.main.pojo.User;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.UnknownAccountException;
@@ -97,6 +98,8 @@ public class UserController {
     @RequestMapping("/main")
     public String toMain(HttpServletRequest request, Model model) {
         Logger.getLogger(this.getClass()).info("【" + port + "】" + request.getSession().getAttribute("userSession"));
+        User user = (User) request.getSession().getAttribute("userSession");
+        model.addAttribute("user",user);
         return "inspinia/main";
     }
 

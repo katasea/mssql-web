@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <title>SCC | 启航</title>
+    <title>SiQ | 启航</title>
     <link th:href="@{inspinia/css/bootstrap.min.css}" rel="stylesheet">
     <link th:href="@{inspinia/font-awesome-4.7.0/css/font-awesome.min.css}" rel="stylesheet"/>
     <!-- 提示框样式 -->
@@ -29,61 +29,31 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element" style="text-align: center">
                         <!--TODO 登录用户头像-->
-                        <img alt="image" style="width:80px;" class="img-circle" th:src="@{inspinia/img/marc.jpg}"/>
+                        <img alt="image" style="width:80px;" class="img-circle" th:src="@{inspinia/img/default-avatar.png}"/>
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">
                                 <span class="block m-t-xs">
-                                <strong class="font-bold">
-                                <!-- TODO 登录用户名称【性别判断】 -->
-                                管理员【先生】
-                                </strong>
-                                </span>
-                                <span class="text-muted text-xs block">
-                                    <!-- TODO 岗位名称 -->
-                                    高级开发工程师<b class="caret"></b>
+                                <strong class="font-bold" th:text="${user.username}"></strong>
                                 </span>
                             </span>
                         </a>
-                        <ul class="dropdown-menu animated fadeInRight m-t-xs">
-                            <li><a href="user/profile">个人中心</a></li>
-                            <li><a href="user/to-do">锁定屏幕</a></li>
-                            <li><a href="user/upasswd">修改密码</a></li>
-                            <li class="divider"></li>
-                            <li><a href="logout">退出系统</a></li>
-                        </ul>
                     </div>
                     <div class="logo-element">
-                        SCC
+                        SiQ
                     </div>
                 </li>
                 <!-- TODO 权限菜单 -->
-                <li>
-                    <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label">业务管理</span><span
+                <li class="active">
+                    <a href="#"><i class="fa fa-sitemap"></i> <span class="nav-label">数据库列表</span><span
                             class="fa arrow"></span></a>
                     <ul class="nav nav-second-level collapse">
-                        <li>
-                            <a href="#" id="damian">Third Level <span class="fa arrow"></span></a>
-                            <ul class="nav nav-third-level">
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-                                <li>
-                                    <a href="#">Third Level Item</a>
-                                </li>
-
-                            </ul>
-                        </li>
                         <li><a href="#">Second Level Item</a></li>
-                        <li>
-                            <a href="#">Second Level Item</a></li>
-                        <li>
-                            <a href="#">Second Level Item</a></li>
+                        <li><a href="#">Second Level Item</a></li>
+                        <li><a href="#">Second Level Item</a></li>
                     </ul>
                 </li>
-                <li class="active">
+
+                <li >
                     <a href="index.html"><i class="fa fa-th-large"></i> <span class="nav-label">系统管理</span> <span
                             class="fa arrow"></span>
                     </a>
@@ -91,12 +61,6 @@
                         <li class="active"><a href="dashboard_2.html">用户中心<span class="label label-warning pull-right">2017/10/02</span></a>
                         </li>
                     </ul>
-                </li>
-
-                <li class="landing_link">
-                    <a target="_blank" href="landing.html"><i class="fa fa-star"></i> <span
-                            class="nav-label">网站主页</span>
-                        <span class="label label-warning pull-right">NEW</span></a>
                 </li>
             </ul>
 
@@ -113,62 +77,9 @@
                 </div>
                 <ul class="nav navbar-top-links navbar-right">
                     <li>
-                        <span class="m-r-sm text-muted welcome-message">欢迎使用SCC平台</span>
+                        <span class="m-r-sm text-muted welcome-message">欢迎使用SiQ</span>
                     </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <i class="fa fa-comment"></i> <span class="label label-warning">16</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-messages">
-                            <!-- TODO 未读消息-->
-                            <li>
-                                <div class="dropdown-messages-box">
-                                    <a href="profile.html" class="pull-left">
-                                        <img alt="image" class="img-circle" src="inspinia/img/a7.jpg">
-                                    </a>
-                                    <div class="media-body">
-                                        <small class="pull-right">46h ago</small>
-                                        <strong>Mike Loreipsum</strong> started following <strong>Monica Smith</strong>.
-                                        <br>
-                                        <small class="text-muted">3 days ago at 7:58 pm - 10.06.2014</small>
-                                    </div>
-                                </div>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a href="mailbox.html">
-                                        <i class="fa fa-comments"></i> <strong>更多未读消息</strong>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <li class="dropdown">
-                        <a class="dropdown-toggle count-info" data-toggle="dropdown" href="#">
-                            <i class="fa fa-bell"></i> <span class="label label-primary">8</span>
-                        </a>
-                        <ul class="dropdown-menu dropdown-alerts">
-                            <!-- TODO 未读提醒 -->
-                            <li>
-                                <a href="mailbox.html">
-                                    <div>
-                                        <i class="fa fa-envelope fa-fw"></i> You have 16 messages
-                                        <span class="pull-right text-muted small">4 minutes ago</span>
-                                    </div>
-                                </a>
-                            </li>
-                            <li class="divider"></li>
-                            <li>
-                                <div class="text-center link-block">
-                                    <a href="notifications.html">
-                                        <strong>更多未读提醒</strong>
-                                        <i class="fa fa-angle-right"></i>
-                                    </a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
+
                     <li>
                         <a href="logout">
                             <i class="fa fa-sign-out"></i> 退出系统
@@ -192,7 +103,7 @@
             <div class="pull-right">
                 <strong>
                     <!-- TODO 系统版本号 -->
-                    版本：GY.BASE|
+                    版本：Novem.BASE|
                     <i class="fa fa-android"></i>
                     <i class="fa fa-apple"></i>
                     <i class="fa fa-windows"></i>
@@ -206,105 +117,17 @@
                 <strong>&copy;[
                     <i class="fa fa-github-alt" aria-hidden="true"></i>
                     <a href="https://github.com/kkillala">
-                        kkillala
+                        Tim
                     </a>|
                     <i class="fa fa-github" aria-hidden="true"></i>
                     <a href="https://github.com/kkillala/scc">
-                        SCC
+                        mssql-web
                     </a>
                     ]
                 </strong>
             </div>
         </div>
     </div>
-    <!-- 主页面结束-->
-    <!-- 微聊天 -->
-    <!--<div class="small-chat-box fadeInRight animated">-->
-        <!--<div class="heading" draggable="true">-->
-            <!--<small class="chat-date pull-right">-->
-                <!--02.19.2015-->
-            <!--</small>-->
-            <!--Small chat-->
-        <!--</div>-->
-
-        <!--<div class="content">-->
-
-            <!--<div class="left">-->
-                <!--<div class="author-name">-->
-                    <!--Monica Jackson-->
-                    <!--<small class="chat-date">-->
-                        <!--10:02 am-->
-                    <!--</small>-->
-                <!--</div>-->
-                <!--<div class="chat-message active">-->
-                    <!--Lorem Ipsum is simply dummy text input.-->
-                <!--</div>-->
-
-            <!--</div>-->
-            <!--<div class="right">-->
-                <!--<div class="author-name">-->
-                    <!--Mick Smith-->
-                    <!--<small class="chat-date">-->
-                        <!--11:24 am-->
-                    <!--</small>-->
-                <!--</div>-->
-                <!--<div class="chat-message">-->
-                    <!--Lorem Ipsum is simpl.-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="left">-->
-                <!--<div class="author-name">-->
-                    <!--Alice Novak-->
-                    <!--<small class="chat-date">-->
-                        <!--08:45 pm-->
-                    <!--</small>-->
-                <!--</div>-->
-                <!--<div class="chat-message active">-->
-                    <!--Check this stock char.-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="right">-->
-                <!--<div class="author-name">-->
-                    <!--Anna Lamson-->
-                    <!--<small class="chat-date">-->
-                        <!--11:24 am-->
-                    <!--</small>-->
-                <!--</div>-->
-                <!--<div class="chat-message">-->
-                    <!--The standard chunk of Lorem Ipsum-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="left">-->
-                <!--<div class="author-name">-->
-                    <!--Mick Lane-->
-                    <!--<small class="chat-date">-->
-                        <!--08:45 pm-->
-                    <!--</small>-->
-                <!--</div>-->
-                <!--<div class="chat-message active">-->
-                    <!--I belive that. Lorem Ipsum is simply dummy text.-->
-                <!--</div>-->
-            <!--</div>-->
-
-
-        <!--</div>-->
-        <!--<div class="form-chat">-->
-            <!--<div class="input-group input-group-sm">-->
-                <!--<input type="text" class="form-control">-->
-                <!--<span class="input-group-btn"> <button-->
-                        <!--class="btn btn-primary" type="button">Send-->
-                <!--</button> </span></div>-->
-        <!--</div>-->
-
-    <!--</div>-->
-    <!--<div id="small-chat">-->
-
-        <!--<span class="badge badge-warning pull-right">5</span>-->
-        <!--<a class="open-small-chat">-->
-            <!--<i class="fa fa-comments"></i>-->
-        <!--</a>-->
-    <!--</div>-->
-    <!-- 微聊天结束-->
     <!-- 配置界面 -->
     <div id="right-sidebar" class="animated">
         <div class="sidebar-container">
@@ -323,7 +146,6 @@
             </ul>
 
             <div class="tab-content">
-
 
                 <div id="tab-1" class="tab-pane active">
 
@@ -721,7 +543,7 @@
                 showMethod: 'slideDown',
                 timeOut: 4000
             };
-            toastr.success('', '欢迎登陆SCC云平台！');
+            toastr.success('', '欢迎登陆SiQ数据库管理中心！');
         }, 700);
         $('.sidebar-collapse').slimScroll({
             height: '100%',
@@ -731,9 +553,9 @@
             height: '100%',
             railOpacity: 0.8
         });
-        $.get("user/list", function (data) {
-            $('#main-div').append(data);
-        });
+//        $.get("user/list", function (data) {
+//            $('#main-div').append(data);
+//        });
     });
 
     //animate.css动画触动一次方法
