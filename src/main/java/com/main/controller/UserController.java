@@ -88,20 +88,6 @@ public class UserController {
         return stateInfo;
     }
 
-    /**
-     * 登录成功主页
-     *
-     * @param request
-     * @param model
-     * @return
-     */
-    @RequestMapping("/main")
-    public String toMain(HttpServletRequest request, Model model) {
-        Logger.getLogger(this.getClass()).info("【" + port + "】" + request.getSession().getAttribute("userSession"));
-        User user = (User) request.getSession().getAttribute("userSession");
-        model.addAttribute("user",user);
-        return "inspinia/main";
-    }
 
     /**
      * 获取用户列表
