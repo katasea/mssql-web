@@ -8,3 +8,5 @@ java -jar 编译后的JAR.jar
      --spring.datasource.username=数据库用户
      --spring.datasource.password=数据库密码
 ```
+登陆页面<br>
+![image](https://github.com/kkillala/mssql-web/blob/master/src/main/resources/static/inspinia/img/readme/img-login-page.jpg)
