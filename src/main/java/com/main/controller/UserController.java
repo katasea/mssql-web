@@ -1,5 +1,6 @@
 package com.main.controller;
 
+import com.main.pojo.StateInfo;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,6 +26,12 @@ public class UserController {
      */
     @Value("${server.port}")
     private String port;
+
+    @Value("${spring.datasource.username}")
+    private String username;
+
+    @Value("${spring.datasource.password}")
+    private String password;
 
     /**
      * 登录页面
@@ -53,19 +60,29 @@ public class UserController {
         return "login";
     }
 
-//    /**
-//     * 登录判断
-//     *
-//     * @param request
-//     * @param model
-//     * @return
-//     */
-//    @ResponseBody
-//    @RequestMapping("/valiad")
-//    public StateInfo valiad(HttpServletRequest request, Model model) {
-//        Logger.getLogger(UserController.class).info("【" + port + "】用户名：" + request.getParameter("userid") + "密码：" + request.getParameter("password"));
-//        return userService.valiad(request.getParameter("userid"), request.getParameter("password"));
-//    }
+    /**
+     * 这里简单的判断页面登陆的用户名和密码是否和配置的sql 登陆用户名和密码是否匹配。
+     * 登录判断
+     * @param request
+     * @param model
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping("/valiad")
+    public StateInfo valiad(HttpServletRequest request, Model model) {
+        Logger.getLogger(UserController.class).info("【" + port + "】用户名：" + request.getParameter("userid") + "登陆");
+        /**
+         * 状态信息
+         */
+        StateInfo stateInfo = new StateInfo();
+        if(username.equals(request.getParameter("userid")) && password.equals(request.getParameter("password"))) {
+            stateInfo.setFlag(true);
+        }else {
+            stateInfo.setFlag(false);
+            stateInfo.setMsg("请确认用户名密码是否正确！");
+        }
+        return stateInfo;
+    }
 
     /**
      * 登录成功主页
