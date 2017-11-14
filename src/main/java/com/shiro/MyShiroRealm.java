@@ -2,8 +2,8 @@ package com.shiro;
 
 import com.main.pojo.Resources;
 import com.main.pojo.User;
-import com.service.ResourcesService;
-import com.service.UserService;
+import com.main.service.ResourcesService;
+import com.main.service.UserService;
 import org.apache.log4j.Logger;
 import org.apache.shiro.SecurityUtils;
 import org.apache.shiro.authc.*;

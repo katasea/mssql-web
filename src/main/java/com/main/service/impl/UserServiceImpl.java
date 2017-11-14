@@ -1,8 +1,8 @@
-package com.service.impl;
+package com.main.service.impl;
 
 import com.common.Global;
 import com.main.pojo.User;
-import com.service.UserService;
+import com.main.service.UserService;
 import com.shiro.PasswordHelper;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;

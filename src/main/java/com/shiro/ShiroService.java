@@ -2,7 +2,7 @@ package com.shiro;
 
 import com.common.CommonUtil;
 import com.main.pojo.Resources;
-import com.service.ResourcesService;
+import com.main.service.ResourcesService;
 import org.apache.shiro.spring.web.ShiroFilterFactoryBean;
 import org.apache.shiro.web.filter.mgt.DefaultFilterChainManager;
 import org.apache.shiro.web.filter.mgt.PathMatchingFilterChainResolver;

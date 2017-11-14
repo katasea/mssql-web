@@ -4,7 +4,7 @@ import at.pollux.thymeleaf.shiro.dialect.ShiroDialect;
 import com.common.CommonUtil;
 import com.common.Global;
 import com.main.pojo.Resources;
-import com.service.ResourcesService;
+import com.main.service.ResourcesService;
 import org.apache.log4j.Logger;
 import org.apache.shiro.authc.credential.HashedCredentialsMatcher;
 import org.apache.shiro.mgt.SecurityManager;

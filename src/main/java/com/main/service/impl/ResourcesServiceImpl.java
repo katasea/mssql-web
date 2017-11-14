@@ -1,7 +1,7 @@
-package com.service.impl;
+package com.main.service.impl;
 
 import com.main.pojo.Resources;
-import com.service.ResourcesService;
+import com.main.service.ResourcesService;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;

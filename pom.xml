@@ -128,7 +128,11 @@
 			<artifactId>spring-boot-configuration-processor</artifactId>
 			<optional>true</optional>
 		</dependency>
-	</dependencies>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+        </dependency>
+    </dependencies>
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -145,28 +149,6 @@
 
 	<build>
 		<resources>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<filtering>true</filtering>
-				<excludes>
-					<exclude>static/inspinia/**</exclude>
-					<exclude>**/*.woff</exclude>
-					<exclude>**/*.ttf</exclude>
-					<exclude>**/*.eot</exclude>
-					<exclude>**/*.svg</exclude>
-				</excludes>
-			</resource>
-			<resource>
-				<directory>${project.basedir}/src/main/resources</directory>
-				<filtering>false</filtering>
-				<includes>
-					<include>static/inspinia/**</include>
-					<include>**/*.woff</include>
-					<include>**/*.ttf</include>
-					<include>**/*.eot</include>
-					<include>**/*.svg</include>
-				</includes>
-			</resource>
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
