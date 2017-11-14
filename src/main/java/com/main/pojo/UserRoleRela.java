@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 用户资源关联
  * Created by CFQ on 2017/9/25.
  */
-@Table(name = "SCC_USER_ROLE")
+@Table(name = "SIQ_USER_ROLE")
 public class UserRoleRela implements Serializable {
 
     private static final long serialVersionUID = -1407626225396573317L;

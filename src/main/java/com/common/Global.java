@@ -11,11 +11,6 @@ import java.util.UUID;
  *
  */
 public class Global {
-	//又要满足财务大数据平台的使用，又要满足HRP集成平台的使用，所以加了个标识便于切换。主要切换的地方有过滤器用于获取登录用户信息，人员表部门表。
-	public static String SYSTEMFLAG = "CWY";
-	public static final String TOPSCORE = "100";
-	//EXTJS4.2 主题
-	public static Object THEME = "ext-all-neptune";
 	public static Map<String,String> isCreatedTable = new HashMap<String, String>();//记录当年是否已经创建了表
 	public static final String ENCODE = "UTF-8";
 	public static final String DriverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";//数据库URL

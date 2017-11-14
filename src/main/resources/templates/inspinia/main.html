@@ -29,7 +29,9 @@
                 <li class="nav-header">
                     <div class="dropdown profile-element" style="text-align: center">
                         <!--TODO 登录用户头像-->
-                        <img alt="image" style="width:80px;" class="img-circle" th:src="@{inspinia/img/default-avatar.png}"/>
+                        <!--<img alt="image" style="width:80px;" class="img-circle" th:src="@{inspinia/img/default-avatar.png}"/>-->
+                        <i class="fa fa-slideshare fa-5x"></i>
+                        <!--<i class="fa fa-desktop fa-5x"></i>-->
                         <a data-toggle="dropdown" class="dropdown-toggle" href="#">
                             <span class="clear">
                                 <span class="block m-t-xs">
@@ -102,7 +104,7 @@
 
         <!-- TODO 主要界面切换 -->
         <div id="main-div">
-
+            <div id="content-div"></div>
         </div>
         <div class="footer">
             <div class="pull-right">
@@ -567,10 +569,11 @@
      * 获取右边面板组件
      */
     function getPage(db) {
-        alert(db);
-//        $.get("user/list", function (data) {
-//            $('#main-div').append(data);
-//        });
+        $.get("db/"+db, function (data) {
+            $('#content-div').remove();
+            $('#main-div').append("<div id=\"content-div\"></div>");
+            $('#content-div').append(data);
+        });
     }
     //animate.css动画触动一次方法
     $.fn.extend({

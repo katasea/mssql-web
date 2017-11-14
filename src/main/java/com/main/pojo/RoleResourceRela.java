@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 角色和资源关联
  * Created by CFQ on 2017/9/25.
  */
-@Table(name = "SCC_ROLE_RES")
+@Table(name = "SIQ_ROLE_RES")
 public class RoleResourceRela implements Serializable {
     private static final long serialVersionUID = -5518672990323227359L;
     /**

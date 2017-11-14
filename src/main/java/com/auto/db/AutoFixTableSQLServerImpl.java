@@ -20,7 +20,6 @@ import com.common.Global;
 import com.common.Log4JUtil;
 import com.main.dao.CommonDao;
 import com.main.pojo.StateInfo;
-import com.main.pojo.LoginInfo;
 
 /**
  * 自动扫描ebg.pojo包下的实体类，进行注解解析生成表结构语句并维护表结构
@@ -38,18 +37,18 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 	private CommonDao commonDao;
 	
 	@Override
-	public StateInfo run(LoginInfo li) {
+	public StateInfo run(int year) {
 		long begin = System.currentTimeMillis();
 		Log4JUtil.info("---开始自动修复表结构---");
 		Set<Class<?>> classes = ClassTools.getClasses(pack);
-		StateInfo stateInfo = dealClassSQL(classes,li);
+		StateInfo stateInfo = dealClassSQL(classes,year);
 		long end = System.currentTimeMillis();
 		Log4JUtil.info("---结束自动修复表结构---");
 		Log4JUtil.info("总共花费了"+((end-begin)*0.001)+"秒");
 		return stateInfo;
 	}
 	
-	public StateInfo dealClassSQL(Set<Class<?>> classes,LoginInfo li) {
+	public StateInfo dealClassSQL(Set<Class<?>> classes,int year) {
 		StateInfo stateInfo = new StateInfo();
 		List<String> sqlAdd = new ArrayList<String>();
 		List<String> sqlUpt = new ArrayList<String>();
@@ -63,11 +62,9 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 		StringBuffer editBuf = new StringBuffer();
 		StringBuffer pkBuf = new StringBuffer();
 		StringBuffer dvBuf = new StringBuffer();
-		String year = null;
-		if(li != null ) {
-			year = li.getTheyear();
-		}else {
-			year = new SimpleDateFormat("yyyy").format(new Date());
+
+		if(year == 0 ) {
+			year = Integer.parseInt(new SimpleDateFormat("yyyy").format(new Date()));
 		}
 		
 		for (Class<?> clas : classes){
@@ -87,7 +84,7 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 			if(CommonUtil.isEmpty(tablename)) {
 				tablename = clas.getSimpleName();
 			}
-			tablename = tablename.toUpperCase().replace("@YEAR", year); 
+			tablename = tablename.toUpperCase().replace("@YEAR", String.valueOf(year));
 			//==================================================================================//
 			//去掉索引，然后再修改列
 			String indexName = table_indexName.get(tablename.toUpperCase());
@@ -113,8 +110,8 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 				String flag = column.flag();
 				String dv = column.defaultValue();
 				String oth = column.oth();//identity(1,1)
-				if(!CommonUtil.isEmpty(dv)&&li!=null) {
-					dv = dv.toUpperCase().replace("@YEAR", year);
+				if(!CommonUtil.isEmpty(dv)) {
+					dv = dv.toUpperCase().replace("@YEAR", String.valueOf(year));
 				}
 				String type = column.type();
 				
@@ -128,7 +125,7 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 					
 					addBuf.append(" NOT NULL ");
 				}
-				if(!CommonUtil.isEmpty(dv)&&li!=null) {
+				if(!CommonUtil.isEmpty(dv)) {
 					addBuf.append(" DEFAULT (").append(dv).append(") ");
 					dvBuf.append("Update ").append(tablename).append(" Set ").append(columnname).append("=").append(dv).append(" ");
 					dvBuf.append("Where ").append(columnname).append(" is null").append(" \r\n");

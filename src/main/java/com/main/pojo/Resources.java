@@ -9,7 +9,7 @@ import java.io.Serializable;
  * 资源信息
  * Created by CFQ on 2017/9/25.
  */
-@Table(name = "SCC_RESOURCE")
+@Table(name = "SIQ_RESOURCE")
 public class Resources implements Serializable {
     private static final long serialVersionUID = 8328484452535384954L;
     /**

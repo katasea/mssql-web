@@ -1,12 +1,15 @@
 package com.main.controller;
 
+import com.common.CommonUtil;
 import com.main.pojo.User;
 import com.main.service.DatabaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -44,5 +47,14 @@ public class DatabaseController {
         List<Map<String,Object>> databases = databaseService.getDatabaseList(user);
         model.addAttribute("databases",databases);
         return "inspinia/main";
+    }
+
+    @RequestMapping(value = "/db/{id}", method = RequestMethod.GET)
+    public String getEditPage(HttpServletRequest request, Model model,@PathVariable("id") String dbname) {
+        User user = (User) request.getSession().getAttribute("userSession");
+        Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"访问数据库:"+dbname+" 备份列表");
+        model.addAttribute("dbname",dbname);
+
+        return "inspinia/db/info";
     }
 }

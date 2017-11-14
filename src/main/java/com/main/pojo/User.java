@@ -10,7 +10,7 @@ import com.auto.annotation.Table;
  *
  * @author CFQ
  */
-@Table(name = "SCC_USER")
+@Table(name = "SIQ_USER")
 public class User implements Serializable {
     /**
      *
