@@ -549,7 +549,7 @@
                 closeButton: true,
                 progressBar: true,
                 showMethod: 'slideDown',
-                timeOut: 4000
+                timeOut: 2000
             };
             toastr.success('', '欢迎登陆SiQ数据库管理中心！');
         }, 700);
@@ -561,9 +561,7 @@
             height: '100%',
             railOpacity: 0.8
         });
-//        $.get("user/list", function (data) {
-//            $('#main-div').append(data);
-//        });
+        getPage("null");
     });
     /**
      * 获取右边面板组件

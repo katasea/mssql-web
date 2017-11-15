@@ -22,7 +22,7 @@
     <div class="input-group-btn">
         <a data-toggle="modal"
            class="btn btn-sm btn-primary"
-           th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/\''+${dbname}+'/backup\');'"
+           th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/'+${dbname}+'/backup\');'"
         >
             <i class="fa fa-plus-circle"></i> 新建备份
         </a>
@@ -92,7 +92,7 @@
     </div>
 </div>
 <!-- TODO 新增备份 -->
-<div id="modal-form-backup" class="modal" style="height: 550px">
+<div id="modal-form-backup" class="modal">
     <div class="modal-dialog ">
         <div class="modal-content">
         </div>

@@ -58,6 +58,14 @@ public class DatabaseController {
      */
     @RequestMapping(value = "/db/{dbname}", method = RequestMethod.GET)
     public String getDBInfos(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname) {
+        if(CommonUtil.isEmpty(dbname)) {
+            List<Map<String,Object>> databases = databaseService.getDatabaseList(null);
+            if(databases!=null && databases.size()>0) {
+                dbname = String.valueOf(databases.get(0).get("name"));
+            }else {
+                return null;
+            }
+        }
         User user = (User) request.getSession().getAttribute("userSession");
         Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"访问数据库:"+dbname+" 备份列表");
         model.addAttribute("dbname",dbname);
@@ -89,6 +97,18 @@ public class DatabaseController {
     @RequestMapping(value = "/db/{dbname}/{vid}", method = RequestMethod.GET)
     public String getDBInfo(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
         return null;
+    }
+
+    /**
+     * 跳转界面
+     * @param request
+     * @param model
+     * @param dbname
+     * @return
+     */
+    @RequestMapping(value = "/db/{dbname}/backup", method = RequestMethod.GET)
+    public String getAddPage(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname) {
+        return "inspinia/db/createBackup";
     }
 
     /**
