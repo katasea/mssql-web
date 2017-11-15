@@ -2,9 +2,9 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>scc.es</groupId>
+	<groupId>siq</groupId>
 	<artifactId>mssql-web</artifactId>
-	<version>0.0.1-SNAPSHOT</version>
+	<version>Novem.BASE</version>
 	<packaging>jar</packaging>
 
 	<name>mssql-web</name>
@@ -119,8 +119,6 @@
 			<groupId>com.microsoft.sqlserver</groupId>
 			<artifactId>sqljdbc4</artifactId>
 			<version>4.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/resources/templates/lib/sqljdbc.jar</systemPath>
 		</dependency>
 
 		<dependency>
@@ -149,6 +147,12 @@
 
 	<build>
 		<resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**/*</include>
+                </includes>
+            </resource>
 			<resource>
 				<directory>src/main/java</directory>
 				<includes>
@@ -166,10 +170,15 @@
 					<encoding>UTF-8</encoding>
 				</configuration>
 			</plugin>
-			<plugin>
-				<groupId>org.springframework.boot</groupId>
-				<artifactId>spring-boot-maven-plugin</artifactId>
-			</plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <!--热部署
+                <configuration>
+                    <fork>true</fork>
+                </configuration>
+                -->
+            </plugin>
 		</plugins>
 	</build>
 
