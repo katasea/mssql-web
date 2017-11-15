@@ -1,6 +1,7 @@
 package com.main.service.impl;
 
 import com.main.dao.DatabaseDao;
+import com.main.pojo.DBBackupInfoBean;
 import com.main.pojo.User;
 import com.main.service.DatabaseService;
 import org.springframework.stereotype.Service;
@@ -23,8 +24,16 @@ public class DatabaseServiceImpl implements DatabaseService{
     @Override
     public List<Map<String, Object>> getDatabaseList(User user) {
         StringBuffer sqlBuffer = new StringBuffer();
-        sqlBuffer.append("select * from sysdatabases");
+        sqlBuffer.append("SELECT * FROM SYSDATABASES");
         List<Map<String,Object>> result = dao.getListForMap(sqlBuffer.toString());
         return result;
+    }
+
+    @Override
+    public List<Map<String,Object>> getBackupInfoList(String dbname) {
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("SELECT * FROM SIQ_DATABASEBACKUPVERSION ");
+        sqlBuffer.append("WHERE DBNAME = '"+dbname+"' ORDER BY DVTIME DESC ");
+        return dao.getListForMap(sqlBuffer.toString());
     }
 }

@@ -8,7 +8,9 @@
     /*url('../fonts/glyphicons-halflings-regular.ttf') format('truetype'),*/
     /*url('../fonts/glyphicons-halflings-regular.svg#glyphicons_halflingsregular') format('svg');*/
 /*}*/
-
+.etc{
+    overflow: hidden; text-overflow:ellipsis; white-space: nowrap;
+}
 .op{
     opacity: 0.8;
 }

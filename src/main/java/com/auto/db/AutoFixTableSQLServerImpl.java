@@ -9,6 +9,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Resource;
+
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.auto.annotation.Column;
@@ -17,7 +19,6 @@ import com.common.ArrayUtils;
 import com.common.ClassTools;
 import com.common.CommonUtil;
 import com.common.Global;
-import com.common.Log4JUtil;
 import com.main.dao.CommonDao;
 import com.main.pojo.StateInfo;
 
@@ -39,12 +40,12 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 	@Override
 	public StateInfo run(int year) {
 		long begin = System.currentTimeMillis();
-		Log4JUtil.info("---开始自动修复表结构---");
+		Logger.getLogger(this.getClass()).info("---开始自动修复表结构---");
 		Set<Class<?>> classes = ClassTools.getClasses(pack);
 		StateInfo stateInfo = dealClassSQL(classes,year);
 		long end = System.currentTimeMillis();
-		Log4JUtil.info("---结束自动修复表结构---");
-		Log4JUtil.info("总共花费了"+((end-begin)*0.001)+"秒");
+		Logger.getLogger(this.getClass()).info("---结束自动修复表结构---");
+		Logger.getLogger(this.getClass()).info("总共花费了"+((end-begin)*0.001)+"秒");
 		return stateInfo;
 	}
 	
@@ -206,24 +207,24 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 			
 			if(sqlAdd.size()>0) {
 				commonDao.transactionUpdate(sqlAdd);
-				Log4JUtil.info("--新增数据库表完成--");
+				Logger.getLogger(this.getClass()).info("--新增数据库表完成--");
 			}
 			if(sqlUpt.size()>0) {
 				commonDao.transactionUpdate(sqlUpt);
-				Log4JUtil.info("--修改数据库表完成--");
+				Logger.getLogger(this.getClass()).info("--修改数据库表完成--");
 			}
 			if(sqlPK.size()>0) {
 				commonDao.transactionUpdate(sqlPK);
-				Log4JUtil.info("--主键删除完成--");
+				Logger.getLogger(this.getClass()).info("--主键删除完成--");
 			}
 			if(sqlEtc.size()>0) {
 				commonDao.transactionUpdate(sqlEtc);
-				Log4JUtil.info("--其他操作完成--");
+				Logger.getLogger(this.getClass()).info("--其他操作完成--");
 			}
 			
 		} catch (Exception e) {
 			e.printStackTrace();
-			Log4JUtil.error(e.getMessage());
+			Logger.getLogger(this.getClass()).error(e.getMessage());
 			stateInfo.setFlag(false);
 			stateInfo.setMsg(e.getMessage());
 		}
