@@ -12,3 +12,5 @@ java -jar 编译后的JAR.jar
 ```
 登陆页面<br>
 ![image](https://github.com/kkillala/mssql-web/blob/master/src/main/resources/static/inspinia/img/readme/img-login-page.jpg)
+主界面<br>
+![image](https://github.com/kkillala/mssql-web/blob/master/src/main/resources/static/inspinia/img/readme/img-main-page.jpg)
