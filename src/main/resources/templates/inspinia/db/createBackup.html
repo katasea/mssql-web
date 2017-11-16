@@ -57,18 +57,20 @@ $(document).ready(function () {
 //          beforeSubmit : showRequest,    // 提交前的回调函数
             beforeSubmit : function(){
 //                $("<div class=\"loadingWrap\"></div>").appendTo("#main-body");
-                $("#modal-form-backup").mLoading({
-                    text:"",//加载文字，默认值：加载中...
-                    icon:"",//加载图标，默认值：一个小型的base64的gif图片
+
+                $("#main-body").mLoading({
+                    text:" ",//加载文字，默认值：加载中...
+                    icon:"inspinia/img/loading/loading06.gif",//加载图标，默认值：一个小型的base64的gif图片
                     html:false,//设置加载内容是否是html格式，默认值是false
                     content:"",//忽略icon和text的值，直接在加载框中显示此值
                     mask:true//是否显示遮罩效果，默认显示
                 });
-                $("#modal-form-backup").mLoading("show");
+                $(".mloading-icon").css('width','116px');
+                $(".mloading-icon").css('height','70px');
             },
 //          提交后的回调函数
             success: function (data,statusText) {
-                $("#modal-form-backup").mLoading("hide");
+                $("#main-body").mLoading("hide");
 //                $(".loadingWrap").remove();
                 if(data.flag) {
                     $('#modal-form-backup').modal('hide');
