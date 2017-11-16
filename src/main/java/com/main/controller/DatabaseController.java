@@ -1,16 +1,17 @@
 package com.main.controller;
 
 import com.common.CommonUtil;
+import com.common.Global;
 import com.main.pojo.DBBackupInfoBean;
+import com.main.pojo.StateInfo;
 import com.main.pojo.User;
 import com.main.service.DatabaseService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -46,6 +47,7 @@ public class DatabaseController {
         User user = (User) request.getSession().getAttribute("userSession");
         List<Map<String,Object>> databases = databaseService.getDatabaseList(user);
         model.addAttribute("databases",databases);
+        model.addAttribute("VERSION", Global.VERSION);
         return "inspinia/main";
     }
 
@@ -81,7 +83,7 @@ public class DatabaseController {
      * @param dbname
      * @return
      */
-    @RequestMapping(value = "/db/{dbname}", method = RequestMethod.POST)
+    @RequestMapping(value = "/db", method = RequestMethod.POST)
     public String addDB(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname) {
         return null;
     }
@@ -108,20 +110,30 @@ public class DatabaseController {
      */
     @RequestMapping(value = "/db/{dbname}/backup", method = RequestMethod.GET)
     public String getAddPage(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname) {
+        model.addAttribute("dbname",dbname);
+        model.addAttribute("backupInfoBean",new DBBackupInfoBean());
         return "inspinia/db/createBackup";
     }
 
     /**
      * 新增备份
-     * @param request
      * @param model
      * @param dbname
-     * @param vid 备份文件主键
      * @return
      */
-    @RequestMapping(value = "/db/{dbname}/{vid}", method = RequestMethod.POST)
-    public String addDBInfo(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
-        return null;
+    @ResponseBody
+    @RequestMapping(value = "/db/{dbname}", method = RequestMethod.POST)
+    public StateInfo addDBInfo(@ModelAttribute("backupInfoBean") DBBackupInfoBean backupInfoBean,HttpServletRequest request, Model model, @PathVariable("dbname") String dbname) {
+        User user = (User) request.getSession().getAttribute("userSession");
+        Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"备份数据库信息："+backupInfoBean);
+        StateInfo stateInfo = new StateInfo();
+        if(!CommonUtil.isEmpty(dbname)) {
+            stateInfo = databaseService.addDBInfo(user,backupInfoBean);
+        }else {
+            stateInfo.setFlag(false);
+            stateInfo.setMsg("备份的数据库不允许为空，请选择数据库后重试！");
+        }
+        return stateInfo;
     }
 
     /**

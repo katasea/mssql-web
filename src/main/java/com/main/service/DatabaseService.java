@@ -1,6 +1,7 @@
 package com.main.service;
 
 import com.main.pojo.DBBackupInfoBean;
+import com.main.pojo.StateInfo;
 import com.main.pojo.User;
 
 import java.util.List;
@@ -23,4 +24,12 @@ public interface DatabaseService {
      * @return
      */
     List<Map<String,Object>> getBackupInfoList(String dbname);
+
+    /**
+     * 备份数据库
+     * @param user
+     * @param backupInfoBean
+     * @return
+     */
+    StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean);
 }

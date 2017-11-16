@@ -1,12 +1,20 @@
 package com.main.service.impl;
 
+import com.common.CommonUtil;
+import com.common.Global;
 import com.main.dao.DatabaseDao;
 import com.main.pojo.DBBackupInfoBean;
+import com.main.pojo.StateInfo;
 import com.main.pojo.User;
 import com.main.service.DatabaseService;
+import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ClassUtils;
 
 import javax.annotation.Resource;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -33,7 +41,50 @@ public class DatabaseServiceImpl implements DatabaseService{
     public List<Map<String,Object>> getBackupInfoList(String dbname) {
         StringBuffer sqlBuffer = new StringBuffer();
         sqlBuffer.append("SELECT * FROM SIQ_DATABASEBACKUPVERSION ");
-        sqlBuffer.append("WHERE DBNAME = '"+dbname+"' ORDER BY DVTIME DESC ");
+        sqlBuffer.append("WHERE DBNAME = '"+dbname+"' ORDER BY DVTIME DESC,DVNAME DESC ");
         return dao.getListForMap(sqlBuffer.toString());
+    }
+
+    @Override
+    public StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean) {
+        StateInfo stateInfo = new StateInfo();
+        try {
+            Date date = new Date();
+            backupInfoBean.setAddUser(user.getUsername());
+            backupInfoBean.setAutobackup(0);
+            backupInfoBean.setDvtime(Global.df.format(date));
+            String path = System.getProperty("user.dir")+"/backupfile";
+            File file = new File(path);
+            if (file.exists() == false) {
+                file.mkdirs();
+            }
+            backupInfoBean.setDvpath(path+"/"+backupInfoBean.getDvname()+Global.dfpath.format(date)+".SiQ");
+            Logger.getLogger(this.getClass()).info("备份文件路径："+backupInfoBean.getDvpath());
+            StringBuffer sqlTemp = new StringBuffer();
+            /**
+             * 备份数据库SQL语句
+             */
+            List<String> sqlList = new ArrayList<String>();
+            sqlTemp.append("backup database " + backupInfoBean.getDbname()+ " to disk='" + backupInfoBean.getDvpath() + "' with init");
+            sqlList.add(sqlTemp.toString());
+            sqlTemp.setLength(0);
+            sqlTemp.append("Insert into SIQ_DatabaseBackupVersion(dvid,dvname,dvtime,addUser,dvinfo,dvpath,dbname,autobackup) values (");
+            sqlTemp.append("newid(),'").append(CommonUtil.isEmpty(backupInfoBean.getDvname())?backupInfoBean.getDbname().toUpperCase():backupInfoBean.getDvname()).append("',");
+            sqlTemp.append("'").append(backupInfoBean.getDvtime()).append("',");
+            sqlTemp.append("'").append(backupInfoBean.getAddUser()).append("',");
+            sqlTemp.append("'").append(CommonUtil.isEmpty(backupInfoBean.getDvinfo())?"用户没有填写":backupInfoBean.getDvinfo()).append("',");
+            sqlTemp.append("'").append(backupInfoBean.getDvpath()).append("',");
+            sqlTemp.append("'").append(backupInfoBean.getDbname()).append("',");
+            sqlTemp.append(backupInfoBean.getAutobackup());
+            sqlTemp.append(")");
+            sqlList.add(sqlTemp.toString());
+            sqlTemp.setLength(0);
+            dao.transactionUpdate(sqlList);
+        }catch (Exception e) {
+            Logger.getLogger(this.getClass()).error(e.getMessage());
+            stateInfo.setFlag(false);
+            stateInfo.setMsg(e.getMessage());
+        }
+        return stateInfo;
     }
 }

@@ -108,29 +108,20 @@
         </div>
         <div class="footer">
             <div class="pull-right">
+                <strong th:text="|版本：${VERSION}|">
+                </strong>
                 <strong>
-                    <!-- TODO 系统版本号 -->
-                    版本：Novem.BASE|
-                    <i class="fa fa-android"></i>
-                    <i class="fa fa-apple"></i>
-                    <i class="fa fa-windows"></i>
-                    <i class="fa fa-linux"></i>
+                    |
                     <i class="fa fa-css3"></i>
                     <i class="fa fa-html5"></i>
-                    <!--<i class="fa fa-signal"></i>-->
                 </strong>
             </div>
             <div>
-                <strong>&copy;[
-                    <i class="fa fa-github-alt" aria-hidden="true"></i>
-                    <a href="https://github.com/kkillala">
-                        Tim
-                    </a>|
+                <strong>&copy;
                     <i class="fa fa-github" aria-hidden="true"></i>
-                    <a href="https://github.com/kkillala/scc">
-                        mssql-web
+                    <a href="https://github.com/kkillala/mssql-web">
+                        SiQ
                     </a>
-                    ]
                 </strong>
             </div>
         </div>
@@ -540,18 +531,14 @@
 <!-- Toastr -->
 <script src="inspinia/js/plugins/toastr/toastr.min.js"></script>
 
+<!--jquery.form.js-->
+<script src="inspinia/js/jquery.form.js"></script>
 
 <script>
     /*<![CDATA[*/
     $(document).ready(function () {
         setTimeout(function () {
-            toastr.options = {
-                closeButton: true,
-                progressBar: true,
-                showMethod: 'slideDown',
-                timeOut: 2000
-            };
-            toastr.success('', '欢迎登陆SiQ数据库管理中心！');
+            showMessage(1,'欢迎登陆SiQ数据库管理中心！',2);
         }, 700);
         $('.sidebar-collapse').slimScroll({
             height: '100%',
@@ -563,6 +550,34 @@
         });
         getPage("null");
     });
+
+    /**
+     * 提示框
+     * flag = 1 success
+     * flag = 2 warning
+     * flag = 3 error
+     */
+    function showMessage(flag,message,timeOut,title) {
+        if(title == null || title == undefined) {
+            title = '';
+        }
+        if(timeOut !=null && timeOut != undefined) {
+            timeOut = timeOut * 1000;
+        }
+        toastr.options = {
+            closeButton: true,
+            progressBar: true,
+            showMethod: 'slideDown',
+            timeOut: timeOut
+        };
+        if(flag == 1) {
+            toastr.success(title,message);
+        }else if(flag == 2) {
+            toastr.warning(title,message);
+        }else {
+            toastr.error(title,message);
+        }
+    }
     /**
      * 获取右边面板组件
      */

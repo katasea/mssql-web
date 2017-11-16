@@ -1,6 +1,9 @@
 package com.common;
 
 import freemarker.template.utility.DateUtil;
+
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -13,6 +16,9 @@ import java.util.UUID;
 public class Global {
 	public static Map<String,String> isCreatedTable = new HashMap<String, String>();//记录当年是否已经创建了表
 	public static final String ENCODE = "UTF-8";
+	public static final String VERSION = "Novem.BASE";
+	public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//日期format
+	public static final DateFormat dfpath = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");//日期format
 	public static final String DriverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";//数据库URL
 	public static final String RECORD_HAD_SUBMIT = "1"; //已提交状态
 	public static final String RECORD_WAIT_SUBMIT = "0";//待提交状态
