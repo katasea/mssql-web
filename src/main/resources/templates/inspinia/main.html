@@ -16,6 +16,7 @@
     <!-- 额外样式 -->
     <link th:href="@{inspinia/css/style.css}" rel="stylesheet">
     <link th:href="@{inspinia/css/jquery.mloading.css}" rel="stylesheet">
+    <link th:href="@{inspinia/css/jquery-confirm.css}" rel="stylesheet">
     <link th:href="@{inspinia/css/plugins/awesome-bootstrap-checkbox/awesome-bootstrap-checkbox.css}" rel="stylesheet">
     <link th:href="@{inspinia/css/plugins/iCheck/custom.css}" rel="stylesheet">
     <script src="http://cdn.static.runoob.com/libs/angular.js/1.4.6/angular.min.js"></script>
@@ -541,6 +542,7 @@
 <script src="inspinia/js/jquery.form.js"></script>
 <!--jquery loading-->
 <script src="inspinia/js/jquery.mloading.js"></script>
+<script src="inspinia/js/jquery-confirm.js"></script>
 
 <script>
     /*<![CDATA[*/
@@ -601,7 +603,9 @@
             showMethod: 'slideDown',
             timeOut: timeOut
         };
-        if(flag == 1) {
+        if(flag == 0) {
+            toastr.info(title,message);
+        }else if(flag == 1) {
             toastr.success(title,message);
         }else if(flag == 2) {
             toastr.warning(title,message);

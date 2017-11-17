@@ -44,7 +44,6 @@ public class DatabaseController {
      */
     @RequestMapping("/main")
     public String toMain(HttpServletRequest request, Model model) {
-        Logger.getLogger(this.getClass()).info("【" + port + "】" + request.getSession().getAttribute("userSession"));
         User user = (User) request.getSession().getAttribute("userSession");
         List<Map<String,Object>> databases = databaseService.getDatabaseList(user);
         model.addAttribute("databases",databases);
@@ -72,8 +71,6 @@ public class DatabaseController {
                 return null;
             }
         }
-        User user = (User) request.getSession().getAttribute("userSession");
-        Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"访问数据库:"+dbname+" 备份列表");
         model.addAttribute("dbname",dbname);
         String keyword = request.getParameter("keyword");
         if(CommonUtil.isNotEmpty(keyword)) {
@@ -106,9 +103,7 @@ public class DatabaseController {
      */
     @RequestMapping(value = "/db/{dbname}/{vid}", method = RequestMethod.GET)
     public String getDBInfo(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
-        User user = (User) request.getSession().getAttribute("userSession");
         Map<String,Object> backup = databaseService.getBackupInfo(vid);
-        Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"查看数据库"+dbname+"的备份文件"+vid+":"+backup);
         model.addAttribute("backup",backup);
         return "inspinia/db/backupDetail";
     }
@@ -138,7 +133,6 @@ public class DatabaseController {
     @RequestMapping(value = "/db/{dbname}", method = RequestMethod.POST)
     public StateInfo addDBInfo(@ModelAttribute("backupInfoBean") DBBackupInfoBean backupInfoBean,HttpServletRequest request, Model model, @PathVariable("dbname") String dbname) throws InterruptedException {
         User user = (User) request.getSession().getAttribute("userSession");
-        Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"备份数据库信息："+backupInfoBean);
         StateInfo stateInfo = new StateInfo();
         if(!CommonUtil.isEmpty(dbname)) {
 //            Thread.sleep(5000);
@@ -188,6 +182,7 @@ public class DatabaseController {
      */
     @RequestMapping(value = "/restore/{dbname}/{vid}", method = RequestMethod.GET)
     public String restoreDB(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
+        StateInfo stateInfo = databaseService.restore(dbname,vid);
         return null;
     }
 }

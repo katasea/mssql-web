@@ -104,4 +104,9 @@ public class DatabaseServiceImpl implements DatabaseService{
         }
         return stateInfo;
     }
+
+    @Override
+    public StateInfo restore(String dbname, String vid) {
+        return null;
+    }
 }

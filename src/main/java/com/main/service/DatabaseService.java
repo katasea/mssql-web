@@ -40,4 +40,12 @@ public interface DatabaseService {
      * @return
      */
     StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean);
+
+    /**
+     * 还原数据库
+     * @param dbname
+     * @param vid
+     * @return
+     */
+    StateInfo restore(String dbname, String vid);
 }

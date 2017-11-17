@@ -105,12 +105,50 @@
     /*<![CDATA[*/
     var dbname = [[${dbname}]];
 
+    /**
+     * 搜索
+     */
     function search_user(form) {
         var keyword = $("#top-search").val();
         keyword = encodeURI(keyword);
         keyword = encodeURI(keyword);
         getPage(dbname + '?keyword=' + keyword);
     }
+
+    function restore(vid) {
+        $.confirm({
+            title: '警告!',
+            content: '即将使用选择的备份文件还原数据库' + dbname.toUpperCase() + '，确定吗？',
+            confirmButton: '立即还原',
+            cancelButton: '取消',
+            confirmButtonClass: 'btn-danger',
+            cancelButtonClass: 'btn-info',
+            keyboardEnabled: true,
+            confirm: function () {
+                $.ajax({
+                    url: 'restore/' + dbname + '/' + vid,
+                    type: 'GET',
+                    timeout: 3000000,
+                    dataType:'json',
+                    //data: {filename : ui.draggable.get(0).file.name, _method: 'DELETE'},
+                    success: function (result) {
+                        if (result.flag) {
+                            showMessage(1, '还原数据库' + dbname + '成功！', 2);
+                        } else {
+                            showMessage(3, result.msg, 10);
+                        }
+                    },
+                    failure:function(){
+                        showMessage(3,'暂时无法访问服务器，请稍后重试！',2);
+                    }
+                });
+            },
+            cancel: function () {
+                showMessage(0, '用户取消还原数据库操作', 2);
+            }
+        });
+    }
+
 
     /*]]>*/
 </script>
