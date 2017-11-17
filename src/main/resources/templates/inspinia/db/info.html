@@ -20,23 +20,29 @@
         <!--</div>-->
     <!--</form>-->
     <div class="input-group-btn">
-        <a data-toggle="modal"
+        <a href="javascript:void(0);" data-toggle="modal"
            class="btn btn-sm btn-primary"
            th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/'+${dbname}+'/backup\');'"
         >
-            <i class="fa fa-plus-circle"></i> 新建备份
+            <i class="fa fa-plus-circle"></i> 创建备份
         </a>
-        <a data-toggle="modal"
+        <a href="javascript:void(0);" data-toggle="modal"
            class="btn btn-sm btn-info"
            onclick="modalShow('#modal-form-user-add', '', 'user/edit/NULL');"
         >
-            <i class="fa fa-upload"></i> 上传本地备份
+            <i class="fa fa-upload"></i> 上传备份
         </a>
-        <a data-toggle="modal"
+        <a href="javascript:void(0);" data-toggle="modal"
            class="btn btn-sm btn-warning"
            onclick="modalShow('#modal-form-user-add', '', 'user/edit/NULL');"
         >
-            <i class="fa fa-recycle"></i> 还原本地备份
+            <i class="fa fa-recycle"></i> 上传还原
+        </a>
+        <a href="javascript:void(0);" data-toggle="modal"
+           class="btn btn-sm btn-danger"
+           onclick="modalShow('#modal-form-user-add', '', 'user/edit/NULL');"
+        >
+            <i class="fa fa-exclamation"></i> 清除库日志
         </a>
     </div>
 
@@ -46,7 +52,7 @@
         <div class="col-lg-4">
             <!-- bg-white,bg-warning,bg-danger -->
             <div class=" contact-box center-version text-uppercase bg-white">
-                <a href="javascript:void(0);">
+                <a href="javascript:void(0);" th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/'+${dbname}+'/backup\');'">
                     <!-- circle-border m-b-md -->
                     <i class="fa fa-plus-square-o fa-5x"></i>
                     <h3 class="m-b-xs"><strong>未找到备份信息</strong></h3>
