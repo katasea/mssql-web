@@ -5,19 +5,19 @@
         <h3 th:text="|备份信息 ${dbname.toUpperCase()}|"></h3>
     </div>
     <form role="search" class="navbar-form-custom pull-right" action="javascript:search_user(this);">
-    <div class="form-control form-group">
-    <input type="text" placeholder="查找..." class="form-control" name="top-search" id="top-search">
-    </div>
+        <div class="form-control form-group">
+            <input type="text" placeholder="查找..." class="form-control" name="top-search" id="top-search">
+        </div>
     </form>
     <!--<form method="get" action="index.html" class="mail-search" action="javascript:search_user(this);">-->
-        <!--<div class="input-group">-->
-            <!--<input type="text" class="form-control input-sm" name="search" placeholder="查找备份...">-->
-            <!--<div class="input-group-btn">-->
-                <!--<button type="submit" class="btn btn-sm btn-default">-->
-                    <!--<i class="fa fa-search"></i> 查找-->
-                <!--</button>-->
-            <!--</div>-->
-        <!--</div>-->
+    <!--<div class="input-group">-->
+    <!--<input type="text" class="form-control input-sm" name="search" placeholder="查找备份...">-->
+    <!--<div class="input-group-btn">-->
+    <!--<button type="submit" class="btn btn-sm btn-default">-->
+    <!--<i class="fa fa-search"></i> 查找-->
+    <!--</button>-->
+    <!--</div>-->
+    <!--</div>-->
     <!--</form>-->
     <div class="input-group-btn">
         <a data-toggle="modal"
@@ -47,7 +47,8 @@
     </div>
 
 </div>
-<div class="wrapper wrapper-content animated fadeInRight" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<div class="wrapper wrapper-content animated fadeInRight" xmlns="http://www.w3.org/1999/xhtml"
+     xmlns:th="http://www.thymeleaf.org">
     <div class="row" th:if="${#lists.isEmpty(backups)}">
         <div class="col-lg-4">
             <!-- bg-white,bg-warning,bg-danger -->
@@ -67,10 +68,11 @@
         <div class="col-lg-4" th:each="backup : ${backups}">
             <!-- bg-white,bg-warning,bg-danger -->
             <div class=" contact-box center-version text-uppercase bg-white">
-                <a th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/'+${dbname}+'/detail\');'">
+                <a th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/'+${dbname}+'/'+${backup.dvid}+'\');'">
                     <!-- circle-border m-b-md -->
                     <i class="fa fa-database fa-5x"></i>
-                    <h3 class="m-b-xs"><strong class="col-lg-12 col-md-12 col-sm-12 col-xs-12 etc" th:text="${backup.dvname}"></strong></h3><br/>
+                    <h3 class="m-b-xs"><strong class="col-lg-12 col-md-12 col-sm-12 col-xs-12 etc"
+                                               th:text="${backup.dvname}"></strong></h3><br/>
                     <div>
                         <small th:text="${backup.dvtime}"></small>
                     </div>
@@ -99,8 +101,16 @@
 <!-- TODO 新增备份 -->
 <!-- iCheck -->
 <script src="inspinia/js/plugins/iCheck/icheck.min.js"></script>
-<script type="application/javascript">
+<script th:inline="javascript" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+    /*<![CDATA[*/
+    var dbname = [[${dbname}]];
+
     function search_user(form) {
-        alert(form);
+        var keyword = $("#top-search").val();
+        keyword = encodeURI(keyword);
+        keyword = encodeURI(keyword);
+        getPage(dbname + '?keyword=' + keyword);
     }
+
+    /*]]>*/
 </script>

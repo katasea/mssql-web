@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.List;
 import java.util.Map;
 
@@ -58,7 +60,10 @@ public class DatabaseController {
      * @return
      */
     @RequestMapping(value = "/db/{dbname}", method = RequestMethod.GET)
-    public String getDBInfos(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname) {
+    public String getDBInfos(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname) throws UnsupportedEncodingException {
+        /**
+         * 如果一开始登陆都没有选择数据库，自动帮他选择第一个数据库展示。
+         */
         if(CommonUtil.isEmpty(dbname)) {
             List<Map<String,Object>> databases = databaseService.getDatabaseList(null);
             if(databases!=null && databases.size()>0) {
@@ -70,7 +75,11 @@ public class DatabaseController {
         User user = (User) request.getSession().getAttribute("userSession");
         Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"访问数据库:"+dbname+" 备份列表");
         model.addAttribute("dbname",dbname);
-        List<Map<String,Object>> backups = databaseService.getBackupInfoList(dbname);
+        String keyword = request.getParameter("keyword");
+        if(CommonUtil.isNotEmpty(keyword)) {
+            keyword = URLDecoder.decode(keyword,"UTF-8");
+        }
+        List<Map<String,Object>> backups = databaseService.getBackupInfoList(dbname,keyword);
         model.addAttribute("backups",backups);
         return "inspinia/db/info";
     }
@@ -97,7 +106,11 @@ public class DatabaseController {
      */
     @RequestMapping(value = "/db/{dbname}/{vid}", method = RequestMethod.GET)
     public String getDBInfo(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
-        return null;
+        User user = (User) request.getSession().getAttribute("userSession");
+        Map<String,Object> backup = databaseService.getBackupInfo(vid);
+        Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"查看数据库"+dbname+"的备份文件"+vid+":"+backup);
+        model.addAttribute("backup",backup);
+        return "inspinia/db/backupDetail";
     }
 
     /**
@@ -113,6 +126,7 @@ public class DatabaseController {
         model.addAttribute("backupInfoBean",new DBBackupInfoBean());
         return "inspinia/db/createBackup";
     }
+
 
     /**
      * 新增备份

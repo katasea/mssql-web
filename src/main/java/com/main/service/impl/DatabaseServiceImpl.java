@@ -38,11 +38,28 @@ public class DatabaseServiceImpl implements DatabaseService{
     }
 
     @Override
-    public List<Map<String,Object>> getBackupInfoList(String dbname) {
+    public List<Map<String,Object>> getBackupInfoList(String dbname,String keyword) {
         StringBuffer sqlBuffer = new StringBuffer();
         sqlBuffer.append("SELECT * FROM SIQ_DATABASEBACKUPVERSION ");
-        sqlBuffer.append("WHERE DBNAME = '"+dbname+"' ORDER BY DVTIME DESC,DVNAME DESC ");
+        sqlBuffer.append("WHERE DBNAME = '"+dbname+"' ");
+        if(CommonUtil.isNotEmpty(keyword)) {
+            sqlBuffer.append("AND (dvname like '%"+keyword+"%' OR dvinfo like '%"+keyword+"%' OR dvtime like '%"+keyword+"%')");
+        }
+        sqlBuffer.append("ORDER BY DVTIME DESC,DVNAME DESC ");
         return dao.getListForMap(sqlBuffer.toString());
+    }
+
+    @Override
+    public Map<String, Object> getBackupInfo(String vid) {
+        StringBuffer sqlBuffer = new StringBuffer();
+        sqlBuffer.append("SELECT * FROM SIQ_DATABASEBACKUPVERSION ");
+        sqlBuffer.append("WHERE DVID = '"+vid+"' ORDER BY DVTIME DESC,DVNAME DESC ");
+        List<Map<String,Object>> list = dao.getListForMap(sqlBuffer.toString());
+        if(CommonUtil.isEmptyList(list)) {
+            return null;
+        }else {
+            return list.get(0);
+        }
     }
 
     @Override
