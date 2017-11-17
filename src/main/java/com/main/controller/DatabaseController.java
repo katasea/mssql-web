@@ -11,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -123,11 +122,12 @@ public class DatabaseController {
      */
     @ResponseBody
     @RequestMapping(value = "/db/{dbname}", method = RequestMethod.POST)
-    public StateInfo addDBInfo(@ModelAttribute("backupInfoBean") DBBackupInfoBean backupInfoBean,HttpServletRequest request, Model model, @PathVariable("dbname") String dbname) {
+    public StateInfo addDBInfo(@ModelAttribute("backupInfoBean") DBBackupInfoBean backupInfoBean,HttpServletRequest request, Model model, @PathVariable("dbname") String dbname) throws InterruptedException {
         User user = (User) request.getSession().getAttribute("userSession");
         Logger.getLogger(this.getClass()).info("【" + port + "】"+user.getUserid()+":"+user.getUsername()+"备份数据库信息："+backupInfoBean);
         StateInfo stateInfo = new StateInfo();
         if(!CommonUtil.isEmpty(dbname)) {
+//            Thread.sleep(5000);
             stateInfo = databaseService.addDBInfo(user,backupInfoBean);
         }else {
             stateInfo.setFlag(false);

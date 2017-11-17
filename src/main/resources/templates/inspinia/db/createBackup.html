@@ -63,7 +63,7 @@ $(document).ready(function () {
 //                $(".loadingWrap").remove();
                 hideMLoading("main-body");
                 if(data.flag) {
-                    $('#modal-form-backup').modal('hide');
+                    modalHide(true);
                     getPage(dbname);
                     showMessage(1,'备份成功！',2);
                 }else {

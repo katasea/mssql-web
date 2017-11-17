@@ -512,6 +512,11 @@
     <!-- 配置界面结束-->
 </div>
 
+<div id="modal-main" class="modal">
+    <div class="modal-dialog">
+        <div class="modal-content"></div>
+    </div>
+</div>
 <!-- Mainly scripts -->
 <script src="inspinia/js/jquery-3.1.1.min.js"></script>
 <script src="inspinia/js/bootstrap.min.js"></script>
@@ -558,17 +563,18 @@
      * 遮罩层显示
      */
     function showMLoading(id) {
-        var intRandom =  Math.floor(Math.random()*6);
+        var intRandom =  Math.floor(Math.random()*2);
         var mLoadingOpt = {
             text:" ",//加载文字，默认值：加载中...
             icon:"inspinia/img/loading/loading0"+intRandom+".gif",//加载图标，默认值：一个小型的base64的gif图片
+//            icon:"inspinia/img/loading/loading00.gif",//加载图标，默认值：一个小型的base64的gif图片
             html:false,//设置加载内容是否是html格式，默认值是false
             content:"",//忽略icon和text的值，直接在加载框中显示此值
             mask:true//是否显示遮罩效果，默认显示
         };
         $("#"+id).mLoading(mLoadingOpt);
-        $(".mloading-icon").css('width','116px');
-        $(".mloading-icon").css('height','70px');
+        $(".mloading-icon").css('width','200px');
+        $(".mloading-icon").css('height','150px');
     }
     /**
      * 遮罩层隐藏
@@ -613,6 +619,7 @@
             $('#content-div').append(data);
         });
     }
+
     //animate.css动画触动一次方法
     $.fn.extend({
         animateCss: function (animationName) {
@@ -628,7 +635,10 @@
      * @param animateName 弹出动作
      * @param href 远程调用
      */
-    var modalShow = function(targetModel, animateName, href){
+    var modalShow = function(animateName, href){
+        var targetModel = "#modal-main";
+        $('#modal-content').remove();
+        $('#modal-dialog').append("<div class=\"modal-content\"></div>");
         var animationIn = [
             "rubberBand","shake","bounce","flash","pulse","swing","tada", "wobble",
             "bounceIn","bounceInDown","bounceInLeft","bounceInRight",
@@ -657,27 +667,34 @@
      * @param animateName 隐藏动作
      * @ callback 回调方法
      */
-    var modalHide = function(targetModel, animateName, callback){
-        var animationOut = [
-            "bounceOut","bounceOutDown","bounceOutLeft","bounceOutRight","bounceOutUp",
-            "fadeOut", "fadeOutDown", "fadeOutLeft", "fadeOutRight", "fadeOutUp",
-            "fadeOutDownBig", "fadeOutLeftBig", "fadeOutRightBig", "fadeOutUpBig",
-            "flipOutX","flipOutY", "lightSpeedOut","rotateOut","rotateOutDownLeft",
-            "rotateOutDownRight","rotateOutUpLeft","rotateOutUpRight",
-            "slideOutDown","slideOutLeft", "slideOutRight", "slideOutUp",
-            "rollOut","hinge"];
-        if(!animateName || animationOut.indexOf(animateName)==-1){
-            console.log(animationOut.length);
-            var intRandom =  Math.floor(Math.random()*animationOut.length);
-            animateName = animationOut[intRandom];
+    var modalHide = function(flag,animateName, callback){
+
+        var targetModel = "#modal-main";
+        if(flag) {
+            $(targetModel).modal('hide');
+        }else {
+            var animationOut = [
+                "bounceOut","bounceOutDown","bounceOutLeft","bounceOutRight","bounceOutUp",
+                "fadeOut", "fadeOutDown", "fadeOutLeft", "fadeOutRight", "fadeOutUp",
+                "fadeOutDownBig", "fadeOutLeftBig", "fadeOutRightBig", "fadeOutUpBig",
+                "flipOutX","flipOutY", "lightSpeedOut","rotateOut","rotateOutDownLeft",
+                "rotateOutDownRight","rotateOutUpLeft","rotateOutUpRight",
+                "slideOutDown","slideOutLeft", "slideOutRight", "slideOutUp",
+                "rollOut","hinge"];
+            if(!animateName || animationOut.indexOf(animateName)==-1){
+                console.log(animationOut.length);
+                var intRandom =  Math.floor(Math.random()*animationOut.length);
+                animateName = animationOut[intRandom];
+            }
+
+            $(targetModel).children().click(function(e){e.stopPropagation()});
+            $(targetModel).animateCss(animateName);
+            $(targetModel).delay(900).hide(1,function(){
+                $(this).removeClass('animated ' + animateName);
+                $(targetModel).modal("toggle");
+            });
+            callback.apply(this);
         }
-        $(targetModel).children().click(function(e){e.stopPropagation()});
-        $(targetModel).animateCss(animateName);
-        $(targetModel).delay(900).hide(1,function(){
-            $(this).removeClass('animated ' + animateName);
-            $(targetModel).modal("toggle");
-        });
-        callback.apply(this);
     }
     var modalDataInit = function(info){
         //alert(info);
