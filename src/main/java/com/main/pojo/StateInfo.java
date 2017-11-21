@@ -1,5 +1,7 @@
 package com.main.pojo;
 
+import org.apache.log4j.Logger;
+
 import java.io.Serializable;
 
 /**
@@ -35,7 +37,8 @@ public class StateInfo implements Serializable {
         return msg;
     }
 
-    public void setMsg(String msg) {
+    public void setMsg(Class c,String msg) {
+        Logger.getLogger(c).error(msg);
         this.msg = msg;
     }
 

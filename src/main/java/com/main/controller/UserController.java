@@ -81,10 +81,10 @@ public class UserController {
             subject.login(token);
         }catch (UnknownAccountException e) {
             stateInfo.setFlag(false);
-            stateInfo.setMsg("未识别的用户名!");
+            stateInfo.setMsg(this.getClass(),"未识别的用户名!");
         }catch (Exception e ){
             stateInfo.setFlag(false);
-            stateInfo.setMsg(e.getMessage());
+            stateInfo.setMsg(this.getClass(),e.getMessage());
         }
         return stateInfo;
     }

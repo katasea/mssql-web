@@ -98,15 +98,90 @@ public class DatabaseServiceImpl implements DatabaseService{
             sqlTemp.setLength(0);
             dao.transactionUpdate(sqlList);
         }catch (Exception e) {
-            Logger.getLogger(this.getClass()).error(e.getMessage());
             stateInfo.setFlag(false);
-            stateInfo.setMsg(e.getMessage());
+            stateInfo.setMsg(this.getClass(),e.getMessage());
         }
         return stateInfo;
     }
 
     @Override
     public StateInfo restore(String dbname, String vid) {
-        return null;
+        StateInfo stateInfo = new StateInfo();
+        try {
+            Map<String,Object> dvInfo = this.getBackupInfo(vid);
+            String filePath = String.valueOf(dvInfo.get("dvpath"));
+            File backupFile = new File(filePath);
+            /**
+             * 判断文件是否存在，不存在则给予提示。
+             * 不存在可能由于误删了备份文件夹backupfile里面的文件。
+             */
+            if (backupFile.exists()) {
+                StringBuilder sqlBuffer = new StringBuilder();
+                try{
+                    sqlBuffer.append("create proc p_killspid ");
+                    sqlBuffer.append("@dbname sysname ");
+                    sqlBuffer.append("as  ");
+                    sqlBuffer.append("declare @s nvarchar(1000) ");
+                    sqlBuffer.append("declare tb cursor local for ");
+                    sqlBuffer.append("select s='kill '+cast(spid as varchar) ");
+                    sqlBuffer.append("from master..sysprocesses  ");
+                    sqlBuffer.append("where dbid=db_id(@dbname) ");
+                    sqlBuffer.append("open tb ");
+                    sqlBuffer.append("fetch next from tb into @s ");
+                    sqlBuffer.append("while @@fetch_status=0 ");
+                    sqlBuffer.append("begin ");
+                    sqlBuffer.append("exec(@s) ");
+                    sqlBuffer.append("fetch next from tb into @s ");
+                    sqlBuffer.append("end ");
+                    sqlBuffer.append("close tb ");
+                    sqlBuffer.append("deallocate tb ");
+                    dao.executeSQL(sqlBuffer.toString());
+                } catch (Exception e) {
+                    //不需要捕获，第二次创建会报错，无所谓这边。
+                }
+                sqlBuffer.setLength(0);
+                /**
+                 * 获取当前被还原的备份文件路径
+                 */
+                sqlBuffer.append("RESTORE FILELISTONLY FROM DISK = N'" + filePath + "'");
+                List<Map<String,Object>> tempInfos = dao.getListForMap(sqlBuffer.toString());
+                if(CommonUtil.isNotEmptyList(tempInfos)&&tempInfos.size()>1) {
+                    /**
+                     * 备份文件里面存的mdf ldf存在的路径
+                     */
+                    String olddb = String.valueOf(tempInfos.get(0).get("LogicalName"));
+                    String olddb_log = String.valueOf(tempInfos.get(1).get("LogicalName"));
+                    /**
+                     * 关闭被还原数据库的所有连接
+                     * 让所有连接到这个库的连接都断掉，不然无法还原数据库会提示被占用。
+                     */
+                    dao.executeSQL("exec p_killspid  '" + dbname + "'");
+                    /**
+                     * 还原后的数据库mdf ldf存放的路径
+                     */
+                    String path = System.getProperty("user.dir")+"/MSSQL_DATA";
+                    File file = new File(path); if (file.exists() == false) {file.mkdirs();}
+                    /**
+                     * 开始还原操作
+                     */
+                    sqlBuffer.setLength(0);
+                    sqlBuffer.append("RESTORE DATABASE " + dbname + " FROM DISK = '" + filePath + "' ");
+                    sqlBuffer.append("WITH REPLACE,MOVE '" + olddb + "' TO '"
+                            + path + dbname + ".mdf', MOVE '" + olddb_log + "' TO '"
+                            + path + dbname + "_log.ldf'");
+                    dao.executeSQL(sqlBuffer.toString());
+                }else {
+                    stateInfo.setFlag(false);
+                    stateInfo.setMsg(this.getClass(),"读取备份文件内部还原信息失败！SQL:"+sqlBuffer.toString());
+                }
+            }else {
+                stateInfo.setFlag(false);
+                stateInfo.setMsg(this.getClass(),"备份文件丢失，此记录已经失效！路径："+filePath);
+            }
+        }catch (Exception e) {
+            stateInfo.setFlag(false);
+            stateInfo.setMsg(this.getClass(),e.getMessage());
+        }
+        return stateInfo;
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.plaf.nimbus.State;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -139,7 +140,7 @@ public class DatabaseController {
             stateInfo = databaseService.addDBInfo(user,backupInfoBean);
         }else {
             stateInfo.setFlag(false);
-            stateInfo.setMsg("备份的数据库不允许为空，请选择数据库后重试！");
+            stateInfo.setMsg(this.getClass(),"备份的数据库不允许为空，请选择数据库后重试！");
         }
         return stateInfo;
     }
@@ -180,9 +181,10 @@ public class DatabaseController {
      * @param vid 备份文件主键
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = "/restore/{dbname}/{vid}", method = RequestMethod.GET)
-    public String restoreDB(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
+    public StateInfo restoreDB(HttpServletRequest request, Model model, @PathVariable("dbname") String dbname, @PathVariable("vid") String vid) {
         StateInfo stateInfo = databaseService.restore(dbname,vid);
-        return null;
+        return stateInfo;
     }
 }

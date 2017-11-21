@@ -226,7 +226,7 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 			e.printStackTrace();
 			Logger.getLogger(this.getClass()).error(e.getMessage());
 			stateInfo.setFlag(false);
-			stateInfo.setMsg(e.getMessage());
+			stateInfo.setMsg(this.getClass(),e.getMessage());
 		}
 		return stateInfo;
 	}

@@ -545,6 +545,7 @@
 <script src="inspinia/js/jquery-confirm.js"></script>
 
 <script>
+    var myMLoading = null;
     /*<![CDATA[*/
     $(document).ready(function () {
         setTimeout(function () {
@@ -564,26 +565,38 @@
     /**
      * 遮罩层显示
      */
-    function showMLoading(id) {
-        var intRandom =  Math.floor(Math.random()*2);
-        var mLoadingOpt = {
-            text:" ",//加载文字，默认值：加载中...
-            icon:"inspinia/img/loading/loading0"+intRandom+".gif",//加载图标，默认值：一个小型的base64的gif图片
-//            icon:"inspinia/img/loading/loading00.gif",//加载图标，默认值：一个小型的base64的gif图片
-            html:false,//设置加载内容是否是html格式，默认值是false
-            content:"",//忽略icon和text的值，直接在加载框中显示此值
-            mask:true//是否显示遮罩效果，默认显示
-        };
-        $("#"+id).mLoading(mLoadingOpt);
-        $(".mloading-icon").css('width','200px');
-        $(".mloading-icon").css('height','150px');
+    function showMLoading(){
+        myMLoading = $.confirm({
+            icon: 'fa fa-spinner fa-spin',
+            title: '加载中...', // hides the title.
+            cancelButton: false, // hides the cancel button.
+            confirmButton: false, // hides the confirm button.
+            closeIcon: false, // hides the close icon.
+            content: false // hides content block.
+        });
     }
+//    function showMLoading(id) {
+//        var intRandom =  Math.floor(Math.random()*2);
+//        var mLoadingOpt = {
+//            text:"",//加载文字，默认值：加载中...
+//            icon:"inspinia/img/loading/loading0"+intRandom+".gif",//加载图标，默认值：一个小型的base64的gif图片
+//            html:false,//设置加载内容是否是html格式，默认值是false
+//            content:"",//忽略icon和text的值，直接在加载框中显示此值
+//            mask:true//是否显示遮罩效果，默认显示
+//        };
+//        $("#"+id).mLoading(mLoadingOpt);
+//        $(".mloading-icon").css('width','200px');
+//        $(".mloading-icon").css('height','150px');
+//    }
     /**
      * 遮罩层隐藏
      */
-    function hideMLoading(id) {
-        $("#"+id).mLoading("hide");
+    function hideMLoading() {
+        myMLoading.close();
     }
+//    function hideMLoading(id) {
+//        $("#"+id).mLoading("hide");
+//    }
     /**
      * 提示框
      * flag = 1 success

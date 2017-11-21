@@ -48,7 +48,7 @@
 
 </div>
 <div class="wrapper wrapper-content animated fadeInRight" xmlns="http://www.w3.org/1999/xhtml"
-     xmlns:th="http://www.thymeleaf.org">
+     xmlns:th="http://www.thymeleaf.org" id="info-div">
     <div class="row" th:if="${#lists.isEmpty(backups)}">
         <div class="col-lg-4">
             <!-- bg-white,bg-warning,bg-danger -->
@@ -68,7 +68,7 @@
         <div class="col-lg-4" th:each="backup : ${backups}">
             <!-- bg-white,bg-warning,bg-danger -->
             <div class=" contact-box center-version text-uppercase bg-white">
-                <a th:onclick="'javascript:modalShow(\'#modal-form-backup\', \'\', \'db/'+${dbname}+'/'+${backup.dvid}+'\');'">
+                <a th:onclick="'javascript:modalShow(\'\', \'db/'+${dbname}+'/'+${backup.dvid}+'\');'">
                     <!-- circle-border m-b-md -->
                     <i class="fa fa-database fa-5x"></i>
                     <h3 class="m-b-xs"><strong class="col-lg-12 col-md-12 col-sm-12 col-xs-12 etc"
@@ -98,11 +98,10 @@
         </div>
     </div>
 </div>
-<!-- TODO 新增备份 -->
 <!-- iCheck -->
 <script src="inspinia/js/plugins/iCheck/icheck.min.js"></script>
 <script th:inline="javascript" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-    /*<![CDATA[*/
+/*<![CDATA[*/
     var dbname = [[${dbname}]];
 
     /**
@@ -115,6 +114,9 @@
         getPage(dbname + '?keyword=' + keyword);
     }
 
+    /**
+     * 还原数据库
+     */
     function restore(vid) {
         $.confirm({
             title: '警告!',
@@ -125,6 +127,7 @@
             cancelButtonClass: 'btn-info',
             keyboardEnabled: true,
             confirm: function () {
+                showMLoading("info-div");
                 $.ajax({
                     url: 'restore/' + dbname + '/' + vid,
                     type: 'GET',
@@ -132,13 +135,22 @@
                     dataType:'json',
                     //data: {filename : ui.draggable.get(0).file.name, _method: 'DELETE'},
                     success: function (result) {
+                        hideMLoading("info-div");
                         if (result.flag) {
-                            showMessage(1, '还原数据库' + dbname + '成功！', 2);
+                            $.alert({
+//                                icon: 'fa fa-spinner fa-spin',
+                                title: '提示',
+                                content: '还原数据库' + dbname.toUpperCase() + '成功！',
+                                confirmButton: '收到',
+                                confirmButtonClass: 'btn-info',
+                                backgroundDismiss: true
+                            });
                         } else {
                             showMessage(3, result.msg, 10);
                         }
                     },
                     failure:function(){
+                        hideMLoading("info-div");
                         showMessage(3,'暂时无法访问服务器，请稍后重试！',2);
                     }
                 });
@@ -148,7 +160,5 @@
             }
         });
     }
-
-
-    /*]]>*/
+/*]]>*/
 </script>
