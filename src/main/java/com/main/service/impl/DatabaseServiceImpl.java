@@ -159,7 +159,7 @@ public class DatabaseServiceImpl implements DatabaseService{
                     /**
                      * 还原后的数据库mdf ldf存放的路径
                      */
-                    String path = System.getProperty("user.dir")+"/MSSQL_DATA";
+                    String path = System.getProperty("user.dir")+"/MSSQL_DATA/";
                     File file = new File(path); if (file.exists() == false) {file.mkdirs();}
                     /**
                      * 开始还原操作

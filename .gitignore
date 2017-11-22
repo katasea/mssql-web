@@ -20,3 +20,5 @@ mssql-web.iml
 .idea
 /target
 /backupfile
+*.mdf
+*.ldf

@@ -560,7 +560,14 @@
             railOpacity: 0.8
         });
         getPage("null");
-
+        $("#modal-main").on("hidden", function() {
+            $(this).removeData("modal");
+            $(this).find(".modal-content").children().remove();
+        });
+        $("#modal-main").on("hidden.bs.modal", function() {
+            $(this).removeData("bs.modal");
+            $(this).find(".modal-content").children().remove();
+        });
     });
     /**
      * 遮罩层显示
@@ -669,13 +676,9 @@
             animateName = animationIn[intRandom];
         }
 //        console.log(targetModel + " " + animateName);
-        if(!href) {
-            $(targetModel).modal("toggle").animateCss(animateName);
-        }else {
-            $(targetModel).modal({
-                remote:href
-            }).animateCss(animateName);
-        }
+        $(targetModel).modal({
+            remote:href
+        }).animateCss(animateName);
         //callback.apply(this);
     }
     /**
