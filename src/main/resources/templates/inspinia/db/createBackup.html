@@ -56,12 +56,12 @@ $(document).ready(function () {
         var options = {
             beforeSubmit : function(){
 //                $("<div class=\"loadingWrap\"></div>").appendTo("#main-body");
-                showMLoading("main-body");
+                showMLoading();
             },
 //          提交后的回调函数
             success: function (data,statusText) {
 //                $(".loadingWrap").remove();
-                hideMLoading("main-body");
+                hideMLoading();
                 if(data.flag) {
                     modalHide(true);
                     getPage(dbname);

@@ -48,4 +48,11 @@ public interface DatabaseService {
      * @return
      */
     StateInfo restore(String dbname, String vid);
+
+    /**
+     * 清除数据库日志文件
+     * @param dbname
+     * @return
+     */
+    StateInfo clearDBLog(String dbname);
 }

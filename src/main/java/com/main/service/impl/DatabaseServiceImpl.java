@@ -184,4 +184,40 @@ public class DatabaseServiceImpl implements DatabaseService{
         }
         return stateInfo;
     }
+
+    @Override
+    public StateInfo clearDBLog(String dbname) {
+        StateInfo stateInfo = new StateInfo();
+        try {
+            StringBuffer sqlBuffer = new StringBuffer();
+            sqlBuffer.append("select name from "+dbname+".dbo.sysfiles where fileid = '2'");
+            List<Map<String,Object>> maps = dao.getListForMap(sqlBuffer.toString());
+            if(maps.size()>0) {
+                String tempDBLOG = String.valueOf(maps.get(0).get("name"));
+                List<String> sqls = new ArrayList<String>();
+                sqlBuffer.setLength(0);
+                sqlBuffer.append("alter database "+dbname+" set recovery simple");
+                sqls.add(sqlBuffer.toString());
+
+                sqlBuffer.setLength(0);
+                sqlBuffer.append("dbcc shrinkfile ("+tempDBLOG+",1)");
+                sqls.add(sqlBuffer.toString());
+
+                /**
+                 * 恢复完全模式，会详细记录日子。
+                 */
+//                sqlBuffer.setLength(0);
+//                sqlBuffer.append("alter database "+dbname+" set recovery full");
+//                sqls.add(sqlBuffer.toString());
+                dao.transactionUpdate(sqls);
+            }else {
+                stateInfo.setFlag(false);
+                stateInfo.setMsg(this.getClass(),"执行语句未得到结果："+sqlBuffer.toString());
+            }
+        }catch (Exception e) {
+            stateInfo.setFlag(false);
+            stateInfo.setMsg(this.getClass(),e.getMessage());
+        }
+        return stateInfo;
+    }
 }

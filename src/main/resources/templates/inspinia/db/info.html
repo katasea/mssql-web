@@ -38,9 +38,8 @@
         >
             <i class="fa fa-recycle"></i>&nbsp;上传还原
         </a>
-        <a data-toggle="modal"
-           class="btn btn-sm btn-danger"
-           onclick="modalShow('', 'user/edit/NULL');"
+        <a class="btn btn-sm btn-danger"
+           href="javascript:void(0);" th:onclick="'javascript:clearDBLog(\''+${dbname}+'\')'"
         >
             <i class="fa fa-exclamation"></i>&nbsp;清除库日志
         </a>
@@ -115,6 +114,52 @@
     }
 
     /**
+     * 清除数据库日志文件
+     */
+    function clearDBLog(dbname) {
+        $.confirm({
+            title: '警告!',
+            content: '即将清除数据库' + dbname.toUpperCase() + '的日志文件，该操作会导致无法找回历史数据',
+            confirmButton: '清除日志',
+            cancelButton: '取消',
+            confirmButtonClass: 'btn-danger',
+            cancelButtonClass: 'btn-info',
+            keyboardEnabled: true,
+            confirm: function () {
+                showMLoading();
+                $.ajax({
+                    url: 'clear/' + dbname,
+                    type: 'GET',
+                    timeout: 3000000,
+                    dataType:'json',
+                    //data: {filename : ui.draggable.get(0).file.name, _method: 'DELETE'},
+                    success: function (result) {
+                        hideMLoading();
+                        if (result.flag) {
+                            $.alert({
+                                title: '提示',
+                                content: '清除数据库' + dbname.toUpperCase() + '日志文件成功！',
+                                confirmButton: '好的',
+                                confirmButtonClass: 'btn-info',
+                                backgroundDismiss: true
+                            });
+                        } else {
+                            showMessage(3, result.msg, 10);
+                        }
+                    },
+                    failure:function(){
+                        hideMLoading();
+                        showMessage(3,'暂时无法访问服务器，请稍后重试！',2);
+                    }
+                });
+            },
+            cancel: function () {
+                showMessage(0, '用户取消清除数据库日志文件操作', 2);
+            }
+        });
+    }
+
+    /**
      * 还原数据库
      */
     function restore(vid) {
@@ -127,7 +172,7 @@
             cancelButtonClass: 'btn-info',
             keyboardEnabled: true,
             confirm: function () {
-                showMLoading("info-div");
+                showMLoading();
                 $.ajax({
                     url: 'restore/' + dbname + '/' + vid,
                     type: 'GET',
@@ -135,13 +180,13 @@
                     dataType:'json',
                     //data: {filename : ui.draggable.get(0).file.name, _method: 'DELETE'},
                     success: function (result) {
-                        hideMLoading("info-div");
+                        hideMLoading();
                         if (result.flag) {
                             $.alert({
 //                                icon: 'fa fa-spinner fa-spin',
                                 title: '提示',
                                 content: '还原数据库' + dbname.toUpperCase() + '成功！',
-                                confirmButton: '收到',
+                                confirmButton: '好的',
                                 confirmButtonClass: 'btn-info',
                                 backgroundDismiss: true
                             });
@@ -150,7 +195,7 @@
                         }
                     },
                     failure:function(){
-                        hideMLoading("info-div");
+                        hideMLoading();
                         showMessage(3,'暂时无法访问服务器，请稍后重试！',2);
                     }
                 });

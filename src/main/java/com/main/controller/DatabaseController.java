@@ -187,4 +187,18 @@ public class DatabaseController {
         StateInfo stateInfo = databaseService.restore(dbname,vid);
         return stateInfo;
     }
+
+    /**
+     * 清除数据库日志文件操作
+     * @param request
+     * @param model
+     * @param dbname
+     * @return
+     */
+    @ResponseBody
+    @RequestMapping(value = "/clear/{dbname}", method = RequestMethod.GET)
+    public StateInfo clearDBLog(HttpServletRequest request, Model model, @PathVariable("dbname") String dbname) {
+        StateInfo stateInfo = databaseService.clearDBLog(dbname);
+        return stateInfo;
+    }
 }
