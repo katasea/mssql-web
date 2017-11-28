@@ -5,6 +5,7 @@ import com.main.pojo.DBBackupInfoBean;
 import com.main.pojo.StateInfo;
 import com.main.pojo.User;
 import com.main.service.DatabaseService;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,9 +14,10 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import java.io.File;
-import java.io.FileOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
 import java.util.Date;
+import java.util.Map;
 
 /**
  * 文件上传下载管理
@@ -84,15 +86,44 @@ public class UploadDownload {
 
     /**
      * 下载备份文件
-     * @param request
+     * @param
      * @param model
      * @param dbname
      * @param vid 备份文件主键
      * @return
      */
     @RequestMapping(value = "/download/{dbname}/{vid}", method = RequestMethod.GET)
-    public String downloadDBInfo(HttpServletRequest request, Model model, @PathVariable("dbname") String dbname, @PathVariable("vid") String vid) {
-        return null;
+    public void downloadDBInfo(HttpServletResponse response, Model model, @PathVariable("dbname") String dbname, @PathVariable("vid") String vid) {
+        Map<String,Object> dvInfo = databaseService.getBackupInfo(vid);
+        String filePath = String.valueOf(dvInfo.get("dvpath"));
+        File backupFile = new File(filePath);
+        if (backupFile.exists()) {
+            try {
+                String [] fp =   filePath.split("/");
+                String fileName = fp[fp.length-1];// 文件名称
+                //下载机器码文件
+                response.setHeader("conent-type", "application/octet-stream");
+                response.setContentType("application/octet-stream");
+                response.setHeader("Content-Disposition", "attachment; filename=" + new String(fileName.getBytes("ISO-8859-1"), "UTF-8"));
+                OutputStream os = response.getOutputStream();
+                BufferedOutputStream bos = new BufferedOutputStream(os);
+                InputStream is = null;
+                is = new FileInputStream(filePath);
+                BufferedInputStream bis = new BufferedInputStream(is);
+                int length = 0;
+                byte[] temp = new byte[1 * 1024 * 10];
+                while ((length = bis.read(temp)) != -1) {
+                    bos.write(temp, 0, length);
+                }
+                bos.flush();
+                bis.close();
+                bos.close();
+                is.close();
+            } catch (Exception e) {
+                e.printStackTrace();
+                Logger.getLogger(this.getClass()).error(e.getMessage());
+            }
+        }
     }
 
 }
