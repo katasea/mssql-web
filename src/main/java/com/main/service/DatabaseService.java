@@ -37,9 +37,10 @@ public interface DatabaseService {
      * 备份数据库
      * @param user
      * @param backupInfoBean
+     * @param Flag Global.ADDDBRECORDONLY | NULL
      * @return
      */
-    StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean);
+    StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean,String Flag);
 
     /**
      * 还原数据库
@@ -55,4 +56,11 @@ public interface DatabaseService {
      * @return
      */
     StateInfo clearDBLog(String dbname);
+
+    /**
+     * 删除数据库备份文件
+     * @param vid
+     * @return
+     */
+    StateInfo deleteDBInfo(String vid);
 }

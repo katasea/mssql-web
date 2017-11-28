@@ -22,7 +22,7 @@ public class Global {
 	public static final String DriverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";//数据库URL
 	public static final String RECORD_HAD_SUBMIT = "1"; //已提交状态
 	public static final String RECORD_WAIT_SUBMIT = "0";//待提交状态
-	
+	public static final String ADDDBRECORDONLY = "1";//仅仅插入备份记录到数据库
 	//==========================AUTOCODE SETTING===============================//
 	//pojo bean 所在包
 	public static final String PACKAGEOFPOJO = "com.main.pojo";

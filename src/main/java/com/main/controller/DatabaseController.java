@@ -137,7 +137,7 @@ public class DatabaseController {
         StateInfo stateInfo = new StateInfo();
         if(!CommonUtil.isEmpty(dbname)) {
 //            Thread.sleep(5000);
-            stateInfo = databaseService.addDBInfo(user,backupInfoBean);
+            stateInfo = databaseService.addDBInfo(user,backupInfoBean,null);
         }else {
             stateInfo.setFlag(false);
             stateInfo.setMsg(this.getClass(),"备份的数据库不允许为空，请选择数据库后重试！");
@@ -166,9 +166,10 @@ public class DatabaseController {
      * @param vid 备份文件主键
      * @return
      */
+    @ResponseBody
     @RequestMapping(value = "/db/{dbname}/{vid}", method = RequestMethod.DELETE)
-    public String deleteDBInfo(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
-        return null;
+    public StateInfo deleteDBInfo(HttpServletRequest request, Model model,@PathVariable("dbname") String dbname,@PathVariable("vid") String vid) {
+        return databaseService.deleteDBInfo(vid);
     }
 
     /**
@@ -184,8 +185,7 @@ public class DatabaseController {
     @ResponseBody
     @RequestMapping(value = "/restore/{dbname}/{vid}", method = RequestMethod.GET)
     public StateInfo restoreDB(HttpServletRequest request, Model model, @PathVariable("dbname") String dbname, @PathVariable("vid") String vid) {
-        StateInfo stateInfo = databaseService.restore(dbname,vid);
-        return stateInfo;
+        return databaseService.restore(dbname,vid);
     }
 
     /**
@@ -198,7 +198,6 @@ public class DatabaseController {
     @ResponseBody
     @RequestMapping(value = "/clear/{dbname}", method = RequestMethod.GET)
     public StateInfo clearDBLog(HttpServletRequest request, Model model, @PathVariable("dbname") String dbname) {
-        StateInfo stateInfo = databaseService.clearDBLog(dbname);
-        return stateInfo;
+        return databaseService.clearDBLog(dbname);
     }
 }

@@ -63,27 +63,30 @@ public class DatabaseServiceImpl implements DatabaseService{
     }
 
     @Override
-    public StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean) {
+    public StateInfo addDBInfo(User user, DBBackupInfoBean backupInfoBean,String Flag) {
         StateInfo stateInfo = new StateInfo();
         try {
             Date date = new Date();
             backupInfoBean.setAddUser(user.getUsername());
             backupInfoBean.setAutobackup(0);
             backupInfoBean.setDvtime(Global.df.format(date));
-            String path = System.getProperty("user.dir")+"/backupfile";
-            File file = new File(path);
-            if (file.exists() == false) {
-                file.mkdirs();
-            }
-            backupInfoBean.setDvpath(path+"/"+backupInfoBean.getDvname()+Global.dfpath.format(date)+".SiQ");
-            Logger.getLogger(this.getClass()).info("备份文件路径："+backupInfoBean.getDvpath());
+
             StringBuffer sqlTemp = new StringBuffer();
             /**
              * 备份数据库SQL语句
              */
             List<String> sqlList = new ArrayList<String>();
-            sqlTemp.append("backup database " + backupInfoBean.getDbname()+ " to disk='" + backupInfoBean.getDvpath() + "' with init");
-            sqlList.add(sqlTemp.toString());
+            if(Flag == null) {
+                String path = System.getProperty("user.dir")+"/backupfile";
+                File file = new File(path);
+                if (file.exists() == false) {
+                    file.mkdirs();
+                }
+                backupInfoBean.setDvpath(path+"/"+backupInfoBean.getDvname()+Global.dfpath.format(date)+".SiQ");
+                Logger.getLogger(this.getClass()).info("备份文件路径："+backupInfoBean.getDvpath());
+                sqlTemp.append("backup database " + backupInfoBean.getDbname()+ " to disk='" + backupInfoBean.getDvpath() + "' with init");
+                sqlList.add(sqlTemp.toString());
+            }
             sqlTemp.setLength(0);
             sqlTemp.append("Insert into SIQ_DatabaseBackupVersion(dvid,dvname,dvtime,addUser,dvinfo,dvpath,dbname,autobackup) values (");
             sqlTemp.append("newid(),'").append(CommonUtil.isEmpty(backupInfoBean.getDvname())?backupInfoBean.getDbname().toUpperCase():backupInfoBean.getDvname()).append("',");
@@ -214,6 +217,30 @@ public class DatabaseServiceImpl implements DatabaseService{
                 stateInfo.setFlag(false);
                 stateInfo.setMsg(this.getClass(),"执行语句未得到结果："+sqlBuffer.toString());
             }
+        }catch (Exception e) {
+            stateInfo.setFlag(false);
+            stateInfo.setMsg(this.getClass(),e.getMessage());
+        }
+        return stateInfo;
+    }
+
+    @Override
+    public StateInfo deleteDBInfo(String vid) {
+        StateInfo stateInfo = new StateInfo();
+        try {
+            Map<String,Object> dvInfo = this.getBackupInfo(vid);
+            String filePath = String.valueOf(dvInfo.get("dvpath"));
+            File backupFile = new File(filePath);
+            /**
+             * 判断文件是否存在，不存在则给予提示。
+             * 不存在可能由于误删了备份文件夹backupfile里面的文件。
+             */
+            if (backupFile.exists()) {
+                backupFile.delete();
+            }
+            StringBuffer sqlBuffer = new StringBuffer();
+            sqlBuffer.append("Delete From SIQ_DatabaseBackupVersion Where dvid = '"+vid+"'");
+            dao.executeSQL(sqlBuffer.toString());
         }catch (Exception e) {
             stateInfo.setFlag(false);
             stateInfo.setMsg(this.getClass(),e.getMessage());

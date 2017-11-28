@@ -28,15 +28,9 @@
         </a>
         <a data-toggle="modal"
            class="btn btn-sm btn-info"
-           onclick="modalShow('', 'user/edit/NULL');"
+           th:onclick="'javascript:modalShow(\'\', \'upload/'+${dbname}+'\');'"
         >
             <i class="fa fa-upload"></i>&nbsp;上传备份
-        </a>
-        <a data-toggle="modal"
-           class="btn btn-sm btn-warning"
-           onclick="modalShow('', 'user/edit/NULL');"
-        >
-            <i class="fa fa-recycle"></i>&nbsp;上传还原
         </a>
         <a class="btn btn-sm btn-danger"
            href="javascript:void(0);" th:onclick="'javascript:clearDBLog(\''+${dbname}+'\')'"
@@ -89,7 +83,7 @@
                     <a href="javascript:void(0);" th:onclick="'javascript:restore(\''+${backup.dvid}+'\')'"
                        class="btn btn-xs btn-warning">
                         <i class="fa fa-refresh"></i> 还原 </a>
-                    <a href="javascript:void(0);" th:onclick="'javascript:delete(\''+${backup.dvid}+'\')'"
+                    <a href="javascript:void(0);" th:onclick="'javascript:deletedv(\''+${backup.dvid}+'\',\''+${backup.dvname}+'\',\''+${backup.dvtime}+'\')'"
                        class="btn btn-xs btn-danger">
                         <i class="fa fa-exclamation-circle"></i> 删除</a>
                 </div>
@@ -100,7 +94,7 @@
 <!-- iCheck -->
 <script src="inspinia/js/plugins/iCheck/icheck.min.js"></script>
 <script th:inline="javascript" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
-/*<![CDATA[*/
+    /*<![CDATA[*/
     var dbname = [[${dbname}]];
 
     /**
@@ -111,6 +105,47 @@
         keyword = encodeURI(keyword);
         keyword = encodeURI(keyword);
         getPage(dbname + '?keyword=' + keyword);
+    }
+
+    /**
+     * 删除数据库
+     */
+    function deletedv(vid,dvname,dvtime){
+        $.confirm({
+            title: '危险!',
+            content: '即将删除数据库备份' + dvname.toUpperCase() + '['+dvtime+']的备份文件！确定吗？',
+            confirmButton: '确认删除',
+            cancelButton: '取消',
+            confirmButtonClass: 'btn-danger',
+            cancelButtonClass: 'btn-info',
+            keyboardEnabled: true,
+            confirm: function () {
+                showMLoading();
+                $.ajax({
+                    url: 'db/' + dbname + '/' + vid,
+                    type: 'DELETE',
+                    timeout: 3000000,
+                    dataType: 'json',
+                    data: { _method: 'DELETE'},
+                    success: function (result) {
+                        hideMLoading();
+                        if (result.flag) {
+                            getPage(dbname);
+                            showMessage(2, '删除数据库备份' + dvname.toUpperCase() + '['+dvtime+']备份文件成功！', 3);
+                        } else {
+                            showMessage(3, result.msg, 10);
+                        }
+                    },
+                    failure: function () {
+                        hideMLoading();
+                        showMessage(3, '暂时无法访问服务器，请稍后重试！', 2);
+                    }
+                });
+            },
+            cancel: function () {
+                showMessage(0, '用户取消还原数据库操作', 2);
+            }
+        });
     }
 
     /**
@@ -131,25 +166,26 @@
                     url: 'clear/' + dbname,
                     type: 'GET',
                     timeout: 3000000,
-                    dataType:'json',
+                    dataType: 'json',
                     //data: {filename : ui.draggable.get(0).file.name, _method: 'DELETE'},
                     success: function (result) {
                         hideMLoading();
                         if (result.flag) {
-                            $.alert({
-                                title: '提示',
-                                content: '清除数据库' + dbname.toUpperCase() + '日志文件成功！',
-                                confirmButton: '好的',
-                                confirmButtonClass: 'btn-info',
-                                backgroundDismiss: true
-                            });
+//                            $.alert({
+//                                title: '提示',
+//                                content: '清除数据库' + dbname.toUpperCase() + '日志文件成功！',
+//                                confirmButton: '好的',
+//                                confirmButtonClass: 'btn-info',
+//                                backgroundDismiss: true
+//                            });
+                            showMessage(2, '清除数据库' + dbname.toUpperCase() + '日志文件成功！', 3);
                         } else {
                             showMessage(3, result.msg, 10);
                         }
                     },
-                    failure:function(){
+                    failure: function () {
                         hideMLoading();
-                        showMessage(3,'暂时无法访问服务器，请稍后重试！',2);
+                        showMessage(3, '暂时无法访问服务器，请稍后重试！', 2);
                     }
                 });
             },
@@ -168,7 +204,7 @@
             content: '即将使用选择的备份文件还原数据库' + dbname.toUpperCase() + '，确定吗？',
             confirmButton: '立即还原',
             cancelButton: '取消',
-            confirmButtonClass: 'btn-danger',
+            confirmButtonClass: 'btn-warning',
             cancelButtonClass: 'btn-info',
             keyboardEnabled: true,
             confirm: function () {
@@ -177,26 +213,27 @@
                     url: 'restore/' + dbname + '/' + vid,
                     type: 'GET',
                     timeout: 3000000,
-                    dataType:'json',
+                    dataType: 'json',
                     //data: {filename : ui.draggable.get(0).file.name, _method: 'DELETE'},
                     success: function (result) {
                         hideMLoading();
                         if (result.flag) {
-                            $.alert({
-//                                icon: 'fa fa-spinner fa-spin',
-                                title: '提示',
-                                content: '还原数据库' + dbname.toUpperCase() + '成功！',
-                                confirmButton: '好的',
-                                confirmButtonClass: 'btn-info',
-                                backgroundDismiss: true
-                            });
+//                            $.alert({
+////                                icon: 'fa fa-spinner fa-spin',
+//                                title: '提示',
+//                                content: '还原数据库' + dbname.toUpperCase() + '成功！',
+//                                confirmButton: '好的',
+//                                confirmButtonClass: 'btn-info',
+//                                backgroundDismiss: true
+//                            });
+                            showMessage(1, '还原数据库' + dbname.toUpperCase() + '成功！', 3);
                         } else {
                             showMessage(3, result.msg, 10);
                         }
                     },
-                    failure:function(){
+                    failure: function () {
                         hideMLoading();
-                        showMessage(3,'暂时无法访问服务器，请稍后重试！',2);
+                        showMessage(3, '暂时无法访问服务器，请稍后重试！', 2);
                     }
                 });
             },
@@ -205,5 +242,6 @@
             }
         });
     }
-/*]]>*/
+
+    /*]]>*/
 </script>
