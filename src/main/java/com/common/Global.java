@@ -16,7 +16,7 @@ import java.util.UUID;
 public class Global {
 	public static Map<String,String> isCreatedTable = new HashMap<String, String>();//记录当年是否已经创建了表
 	public static final String ENCODE = "UTF-8";
-	public static final String VERSION = "Novem.BASE";
+	public static final String VERSION = "ELE.BASE";
 	public static final DateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");//日期format
 	public static final DateFormat dfpath = new SimpleDateFormat("yyyy_MM_dd_HH_mm_ss");//日期format
 	public static final String DriverClassName = "com.microsoft.sqlserver.jdbc.SQLServerDriver";//数据库URL

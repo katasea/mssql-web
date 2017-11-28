@@ -4,7 +4,7 @@
 
 	<groupId>siq</groupId>
 	<artifactId>mssql-web</artifactId>
-	<version>Novem.BASE</version>
+	<version>ELE.BASE</version>
 	<packaging>jar</packaging>
 
 	<name>mssql-web</name>
