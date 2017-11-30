@@ -19,7 +19,7 @@ MSSQLSERVER数据库网页客户端，主要实现网页备份还原数据库以
 功能特性
 ---------
 支持在线还原，备份，上传备份文件和下载备份文件功能。
-![登录页面](http://s6.sinaimg.cn/middle/001Ymsvuzy7gdf7YjY1c5&690)
+![登录页面](https://gitee.com/kkillala/mssql-web/attach_files/download?i=106948&u=http%3A%2F%2Ffiles.git.oschina.net%2Fgroup1%2FM00%2F02%2F6C%2FPaAvDFofxKuAAG3FAAJVaEdXXY8736.jpg%3Ftoken%3D2e42149a57e05027edf065da2132e281%26ts%3D1512031404%26attname%3Dapp-add2.jpg)
 
 环境依赖
 ---------
