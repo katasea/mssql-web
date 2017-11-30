@@ -32,7 +32,7 @@ public class DatabaseServiceImpl implements DatabaseService{
     @Override
     public List<Map<String, Object>> getDatabaseList(User user) {
         StringBuffer sqlBuffer = new StringBuffer();
-        sqlBuffer.append("SELECT * FROM SYSDATABASES WHERE CMPTLEVEL=100");
+        sqlBuffer.append("SELECT * FROM SYSDATABASES WHERE name not in ('master','tempdb','model','msdb')");
         List<Map<String,Object>> result = dao.getListForMap(sqlBuffer.toString());
         return result;
     }

@@ -20,13 +20,13 @@
     <!--</div>-->
     <!--</form>-->
     <div class="input-group-btn">
-        <a data-toggle="modal"
+        <a href="javascript:void(0);" data-toggle="modal"
            class="btn btn-sm btn-primary"
            th:onclick="'javascript:modalShow(\'\', \'db/'+${dbname}+'/backup\');'"
         >
             <i class="fa fa-plus-circle"></i>&nbsp;创建备份
         </a>
-        <a data-toggle="modal"
+        <a href="javascript:void(0);" data-toggle="modal"
            class="btn btn-sm btn-info"
            th:onclick="'javascript:modalShow(\'\', \'upload/'+${dbname}+'\');'"
         >
@@ -46,7 +46,7 @@
         <div class="col-lg-4">
             <!-- bg-white,bg-warning,bg-danger -->
             <div class=" contact-box center-version text-uppercase bg-white">
-                <a th:onclick="'javascript:modalShow(\'\', \'db/'+${dbname}+'/backup\');'">
+                <a href="javascript:void(0);" data-toggle="modal" th:onclick="'javascript:modalShow(\'\', \'db/'+${dbname}+'/backup\');'">
                     <!-- circle-border m-b-md -->
                     <i class="fa fa-plus-square-o fa-5x"></i>
                     <h3 class="m-b-xs"><strong>未找到备份信息</strong></h3>
@@ -61,7 +61,7 @@
         <div class="col-lg-4" th:each="backup : ${backups}">
             <!-- bg-white,bg-warning,bg-danger -->
             <div class=" contact-box center-version text-uppercase bg-white">
-                <a th:onclick="'javascript:modalShow(\'\', \'db/'+${dbname}+'/'+${backup.dvid}+'\');'">
+                <a href="javascript:void(0);" th:onclick="'javascript:restore(\''+${backup.dvid}+'\')'">
                     <!-- circle-border m-b-md -->
                     <i class="fa fa-database fa-5x"></i>
                     <h3 class="m-b-xs"><strong class="col-lg-12 col-md-12 col-sm-12 col-xs-12 etc"
@@ -77,9 +77,9 @@
                     <a href="javascript:void(0);" th:onclick="'javascript:downloaddv(\''+${backup.dvid}+'\')'"
                        class="btn btn-xs btn-primary">
                         <i class="fa fa-download"></i> 下载 </a>
-                    <a href="javascript:void(0);" th:onclick="'javascript:update(\''+${backup.dvid}+'\')'"
-                       class="btn btn-xs btn-info">
-                        <i class="fa fa-edit"></i> 修改 </a>
+                    <!--<a href="javascript:void(0);" th:onclick="'javascript:update(\''+${backup.dvid}+'\')'"-->
+                       <!--class="btn btn-xs btn-info">-->
+                        <!--<i class="fa fa-edit"></i> 修改 </a>-->
                     <a href="javascript:void(0);" th:onclick="'javascript:restore(\''+${backup.dvid}+'\')'"
                        class="btn btn-xs btn-warning">
                         <i class="fa fa-refresh"></i> 还原 </a>
