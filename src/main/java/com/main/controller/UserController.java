@@ -69,7 +69,7 @@ public class UserController {
     @ResponseBody
     @RequestMapping("/valiad")
     public StateInfo valiad(HttpServletRequest request, Model model) {
-        Logger.getLogger(UserController.class).info("【" + port + "】USERNAME ：" + request.getParameter("userid") + " LOGIN SYSTEM");
+        Logger.getLogger(UserController.class).info("[" + port + "] USERNAME [" + request.getParameter("userid") + "] LOGIN SYSTEM");
         /**
          * 状态信息
          */

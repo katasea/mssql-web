@@ -23,7 +23,7 @@ public class UserServiceImpl implements UserService{
             user.setEnable("1");
             user.setPkid(Global.createUUID());
             user.setUserid(username);
-            user.setUsername("管理员");
+            user.setUsername("Admin");
             PasswordHelper.encryptPassword(user);
             return user;
         }else {
