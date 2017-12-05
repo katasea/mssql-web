@@ -39,7 +39,7 @@ public class MyShiroRealm extends AuthorizingRealm {
             info.addStringPermission(resource.getResurl());
             urls += resource.getResurl();
         }
-        Logger.getLogger(this.getClass()).info("SHIRO获取资源：" + urls);
+        Logger.getLogger(this.getClass()).info("SHIRO RESOURCES：" + urls);
         return info;
     }
 
@@ -54,7 +54,7 @@ public class MyShiroRealm extends AuthorizingRealm {
         if ("0".equals(user.getEnable())) {
             throw new LockedAccountException(); // 帐号锁定
         }
-        Logger.getLogger(this.getClass()).info("SHIRO获取用户：" + user.getUserid() + ":" + user.getPassword());
+        Logger.getLogger(this.getClass()).info("SHIRO GET USER INFORMATION：" + user.getUserid() + ":" + user.getPassword());
         SimpleAuthenticationInfo authenticationInfo = new SimpleAuthenticationInfo(
                 user.getUserid(), //用户
                 user.getPassword(), //密码

@@ -52,13 +52,13 @@ public class ControllerInterceptor {
         User user = (User) request.getSession().getAttribute("userSession");
         // 记录下请求内容
         logger.info("**********************************************");
-        logger.info("请求地址 : " + request.getRequestURL().toString());
-        logger.info("请求方法 : " + request.getMethod());
-        logger.info("发送主机 : " + request.getRemoteAddr() + ":" + port);
-        logger.info("调用方法 : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
-        logger.info("参数 : " + Arrays.toString(joinPoint.getArgs()));
+        logger.info("TARGET LOCATION : " + request.getRequestURL().toString());
+        logger.info("TARGET METHOD   : " + request.getMethod());
+        logger.info("CLIENT IP       : " + request.getRemoteAddr() + ":" + port);
+        logger.info("CALL PARAMMETER : " + joinPoint.getSignature().getDeclaringTypeName() + "." + joinPoint.getSignature().getName());
+        logger.info("PARAMETER       : " + Arrays.toString(joinPoint.getArgs()));
         if(user!=null) {
-            logger.info("登陆用户 : 【" +user.getUserid()+"/"+user.getUsername() +"】");
+            logger.info("USER INFORMATION: [" +user.getUserid()+"/"+user.getUsername() +"] ");
         }
         //获取所有参数方法一：
 //        Enumeration<String> enu = request.getParameterNames();

@@ -9,7 +9,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Resource;
-
 import org.apache.log4j.Logger;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,7 +22,7 @@ import com.main.dao.CommonDao;
 import com.main.pojo.StateInfo;
 
 /**
- * 自动扫描ebg.pojo包下的实体类，进行注解解析生成表结构语句并维护表结构
+ * 自动扫描pojo包下的实体类，进行注解解析生成表结构语句并维护表结构
  * @author chenfuqiang
  *
  */
@@ -40,12 +39,12 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 	@Override
 	public StateInfo run(int year) {
 		long begin = System.currentTimeMillis();
-		Logger.getLogger(this.getClass()).info("---开始自动修复表结构---");
+		Logger.getLogger(this.getClass()).info("---AUTO FIX DB TABLE START---");
 		Set<Class<?>> classes = ClassTools.getClasses(pack);
 		StateInfo stateInfo = dealClassSQL(classes,year);
 		long end = System.currentTimeMillis();
-		Logger.getLogger(this.getClass()).info("---结束自动修复表结构---");
-		Logger.getLogger(this.getClass()).info("总共花费了"+((end-begin)*0.001)+"秒");
+		Logger.getLogger(this.getClass()).info("---AUTO FIX DB TABLE END---");
+		Logger.getLogger(this.getClass()).info("TAKE TIME "+((end-begin)*0.001)+" SECOND");
 		return stateInfo;
 	}
 	
@@ -207,19 +206,19 @@ public class AutoFixTableSQLServerImpl implements AutoFixTable{
 			
 			if(sqlAdd.size()>0) {
 				commonDao.transactionUpdate(sqlAdd);
-				Logger.getLogger(this.getClass()).info("--新增数据库表完成--");
+				Logger.getLogger(this.getClass()).info("--ADD DB TABLE DONE--");
 			}
 			if(sqlUpt.size()>0) {
 				commonDao.transactionUpdate(sqlUpt);
-				Logger.getLogger(this.getClass()).info("--修改数据库表完成--");
+				Logger.getLogger(this.getClass()).info("--UPDATE DB TABLE DONE--");
 			}
 			if(sqlPK.size()>0) {
 				commonDao.transactionUpdate(sqlPK);
-				Logger.getLogger(this.getClass()).info("--主键删除完成--");
+				Logger.getLogger(this.getClass()).info("--DROP PRIMARY KEY DONE--");
 			}
 			if(sqlEtc.size()>0) {
 				commonDao.transactionUpdate(sqlEtc);
-				Logger.getLogger(this.getClass()).info("--其他操作完成--");
+				Logger.getLogger(this.getClass()).info("--OTHER OPTION DONE--");
 			}
 			
 		} catch (Exception e) {

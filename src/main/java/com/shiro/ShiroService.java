@@ -92,7 +92,6 @@ public class ShiroService {
                         .replace(" ", "");
                 manager.createChain(url, chainDefinition);
             }
-            System.out.println("更新权限成功！！");
         }
     }
 
