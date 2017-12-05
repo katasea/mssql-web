@@ -4,7 +4,7 @@
 
 	<groupId>siq</groupId>
 	<artifactId>mssql-web</artifactId>
-	<version>ELE.BASE</version>
+	<version>TWIF.BASE</version>
 	<packaging>jar</packaging>
 
 	<name>mssql-web</name>
