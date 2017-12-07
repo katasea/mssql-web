@@ -717,6 +717,19 @@
             callback.apply(this);
         }
     }
+
+    /**
+     * 获取项目根路径
+     */
+    function getRootPath() {
+        var strFullPath = window.document.location.href;
+        var strPath = document.location.pathname;
+        var pos = strFullPath.indexOf(strPath);
+        var prePath = strFullPath.substring(0,pos);
+        var postPath = strPath.substring(0,strPath.substring(1).indexOf("/")+1);
+        return (prePath+postPath);
+    }
+
     var modalDataInit = function(info){
         //alert(info);
         //填充数据，对弹出模态框数据样式初始化或修改
